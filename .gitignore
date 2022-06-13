@@ -8,3 +8,4 @@
 *.config
 /*/bin
 /*/obj
+*.suo
