@@ -1,8 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FindJob
 {
@@ -10,7 +6,7 @@ namespace FindJob
     {
         public static IServiceCollection Init(this IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc();            
             return services;
         }
     }
