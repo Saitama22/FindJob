@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindJob", "FindJob\FindJob.csproj", "{21513389-E3EF-40C9-8E86-B85202923DD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindJob", "FindJob.csproj", "{21513389-E3EF-40C9-8E86-B85202923DD9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindJobTests", "FindJobTests\FindJobTests.csproj", "{81B560B3-8DE0-433B-9121-1B1DB686DFAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindJobTests", "..\FindJobTests\FindJobTests.csproj", "{81B560B3-8DE0-433B-9121-1B1DB686DFAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
