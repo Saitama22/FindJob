@@ -30,10 +30,6 @@ namespace FindJob
             app.UseRouting();
             app.UseStaticFiles();
             app.UseStatusCodePages();
-            //app.UseMvc(routes =>
-            //{
-
-            //});
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGet("/", async context =>
