@@ -29,13 +29,13 @@ namespace FindJob
 
             app.UseRouting();
             app.UseStaticFiles();
-            app.UseStatusCodePages();
+            app.UseStatusCodePages();    
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Main}/{Action=Index}");
             });
         }
     }
