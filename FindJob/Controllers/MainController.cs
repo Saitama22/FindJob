@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FindJob.Models.Helper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FindJob.Controllers
 {
@@ -6,7 +7,7 @@ namespace FindJob.Controllers
     {
         public IActionResult StartPage()
         {
-            return View();
+            return RedirectToAction(nameof(WorkerController.Create), nameof(WorkerController).GetNameOfController());
         }
     }
 }

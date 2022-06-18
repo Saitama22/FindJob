@@ -1,0 +1,28 @@
+﻿@model Resume;
+@{
+    ViewBag.Title = "Create";
+}
+<div asp-validation-summary="All"></div>
+<form asp-action="Save" method="post">
+    <input type="hidden" asp-for="Id" /> 
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+    </div>
+    @*<div class="form-group">
+        <label asp-for="Expirience"></label>
+        <input asp-for="Expirience" />
+    </div>*@
+    <div class="form-group">
+        <label asp-for="Salary"></label>
+        <input asp-for="Salary" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Info"></label>
+        <textarea asp-for="Info"></textarea>
+    </div>
+    <div>
+        <button type="submit">Save</button>
+    </div>
+    <a asp-action="Resume">Cancel</a>
+</form>
