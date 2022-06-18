@@ -11,3 +11,5 @@
 *.suo
 *.user
 *.v2
+*.testlog
+*.manifest
