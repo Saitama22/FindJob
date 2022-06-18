@@ -4,7 +4,7 @@ namespace FindJob.Controllers
 {
 	public class MainController : Controller
     {
-        public IActionResult Index()
+        public IActionResult StartPage()
         {
             return View();
         }

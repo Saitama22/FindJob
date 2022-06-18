@@ -35,7 +35,7 @@ namespace FindJob
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Main}/{Action=Index}");
+                    pattern: "{controller=Main}/{Action=StartPage}");
             });
         }
     }
