@@ -15,7 +15,7 @@ namespace FindJob.Models.ViewModels
 
 		public int? Expirience { get; set; }
 
-		public double Salary { get; set; }
+		public double? Salary { get; set; }
 
 		public string Info { get; set; }
 		
