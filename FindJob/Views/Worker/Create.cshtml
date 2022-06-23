@@ -1,6 +1,7 @@
 ﻿@model Resume;
 @{
     ViewBag.Title = "Create";
+    Layout = "_WorkerLayout";
 }
 <div asp-validation-summary="All"></div>
 <form asp-action="Save" method="post">
@@ -9,10 +10,10 @@
         <label asp-for="Name"></label>
         <input asp-for="Name" />
     </div>
-    @*<div class="form-group">
-        <label asp-for="Expirience"></label>
-        <input asp-for="Expirience" />
-    </div>*@
+    <div class="form-group">
+        <label asp-for="Post"></label>
+        <input asp-for="Post" />
+    </div>
     <div class="form-group">
         <label asp-for="Salary"></label>
         <input asp-for="Salary" />
@@ -24,5 +25,5 @@
     <div>
         <button type="submit">Save</button>
     </div>
-    <a asp-action="Resume">Cancel</a>
+    <a asp-action="Resumes">Cancel</a>
 </form>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FindJob.Models.Interfaces.Repositories;
+using FindJob.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FindJob.Controllers
@@ -16,14 +17,21 @@ namespace FindJob.Controllers
 			_resumeRepo = resumeRepo;
 		}
 
-		public IActionResult Vacancies()
-		{
-			return View(_resumeRepo.Resumes);
-		}
-
 		public IActionResult Create()
 		{
 			return View();
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> SaveAsync(Resume resume)
+		{
+			await _resumeRepo.CreateOrUpdateAsync(resume);
+			return RedirectToAction(nameof(Resumes));
+		}
+
+		public IActionResult Resumes()
+		{
+			return View(_resumeRepo.Resumes);
 		}
 	}
 }

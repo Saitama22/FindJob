@@ -4,12 +4,8 @@ using FindJob.Models.ViewModels;
 
 namespace FindJob.Models.Interfaces.Repositories
 {
-	public interface IResumeRepo
+	public interface IResumeRepo: IRepo<Resume>
 	{
 		public IEnumerable<Resume> Resumes { get; }
-
-		public void Add(Resume resume);
-
-		public void Delete(Resume resume);
 	}
 }

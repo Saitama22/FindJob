@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using FindJob.Models.DBContext;
 using FindJob.Models.Interfaces.Repositories;
 using FindJob.Models.ViewModels;
@@ -16,16 +19,25 @@ namespace FindJob.Models.Repositories
 
 		public IEnumerable<Resume> Resumes => _context.Resumes;
 
-		public void Add(Resume resume)
+		public async Task CreateOrUpdateAsync(Resume resume)
 		{
-			throw new System.NotImplementedException("Может быть не безопасно"); //todo 
-			_context.Resumes.Add(resume);
-			_context.SaveChanges();
+			if (resume.Id == Guid.Empty)
+			{
+				resume.Id = Guid.NewGuid();
+				await _context.Resumes.AddAsync(resume);
+			}
+			else
+			{
+				var dbResume = _context.Resumes.FirstOrDefault(r => r.Id == resume.Id);
+				dbResume.Update(resume);
+			}
+			await _context.SaveChangesAsync();
 		}
 
-		public void Delete(Resume resume)
+		public async Task DeleteAsync(Resume resume)
 		{
-			throw new System.NotImplementedException();
+			_context.Resumes.Remove(resume);
+			await _context.SaveChangesAsync();
 		}
 	}
 }
