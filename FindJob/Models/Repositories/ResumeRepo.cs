@@ -34,10 +34,21 @@ namespace FindJob.Models.Repositories
 			await _context.SaveChangesAsync();
 		}
 
+		public async Task DeleteAsync(Guid guid)
+		{
+			var resume = GetByGuid(guid);
+			await DeleteAsync(resume);
+		}
+
 		public async Task DeleteAsync(Resume resume)
 		{
 			_context.Resumes.Remove(resume);
 			await _context.SaveChangesAsync();
+		}
+
+		public Resume GetByGuid(Guid guid)
+		{
+			return Resumes.FirstOrDefault(r => r.Id == guid);
 		}
 	}
 }

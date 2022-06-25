@@ -17,13 +17,13 @@ namespace FindJob.Controllers
 			_resumeRepo = resumeRepo;
 		}
 
-		public IActionResult Create()
+		public IActionResult Create(Guid resumeId)
 		{
-			return View();
+			return View(_resumeRepo.GetByGuid(resumeId));
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> SaveAsync(Resume resume)
+		public async Task<IActionResult> Save(Resume resume)
 		{
 			await _resumeRepo.CreateOrUpdateAsync(resume);
 			return RedirectToAction(nameof(Resumes));
@@ -32,6 +32,12 @@ namespace FindJob.Controllers
 		public IActionResult Resumes()
 		{
 			return View(_resumeRepo.Resumes);
+		}
+
+		public IActionResult Delete(Guid resumeId)
+		{
+			_resumeRepo.DeleteAsync(resumeId);
+			return RedirectToAction(nameof(Resumes));
 		}
 	}
 }
