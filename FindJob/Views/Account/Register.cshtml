@@ -10,12 +10,24 @@
         <input asp-for="Email" />
     </div>
     <div class="form-group">
+        <label asp-for="UserName"></label>
+        <input asp-for="UserName" />
+    </div>
+    <div class="form-group">
         <label asp-for="Password"></label>
         <input asp-for="Password" />
     </div>
     <div class="form-group">
         <label asp-for="ConfirmPassword"></label>
         <input asp-for="ConfirmPassword" />
+    </div>
+    <div>
+        <input type="radio" asp-for="Role" value="Worker" checked>
+        <label>Worker</label>
+    </div>
+    <div>
+        <input type="radio" asp-for="Role" value="Employer">
+        <label>Employer</label>
     </div>
     <div>
         <button type="submit">Сохранить и войти</button>

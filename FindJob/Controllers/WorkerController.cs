@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FindJob.Models.Enums;
 using FindJob.Models.Interfaces.Repositories;
 using FindJob.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FindJob.Controllers
 {
-	[Authorize]
+	[Authorize(Roles = nameof(Roles.Worker))]
 	public class WorkerController : Controller
 	{
 		private readonly IResumeRepo _resumeRepo;

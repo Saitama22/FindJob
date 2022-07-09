@@ -9,8 +9,7 @@ namespace FindJob.Models.ViewModels
 	public class LoginModel
 	{
 		[Required(ErrorMessage = "Не указан Email")]
-		[DataType(DataType.EmailAddress)]
-		public string Email { get; set; }
+		public string UserName { get; set; }
 
 		[Required(ErrorMessage = "Не указан пароль")]
 		[DataType(DataType.Password)]

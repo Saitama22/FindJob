@@ -14,5 +14,7 @@ namespace FindJob.Models.Interfaces.Handler.AccountHandlers
 		Task<bool> TryLogin(LoginModel loginModel);
 
 		Task<IEnumerable<string>> TryRegister(RegisterModel registerModel);
+
+		Task LogOutAsync();
 	}
 }

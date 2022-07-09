@@ -57,7 +57,14 @@ namespace FindJob.Controllers
 
 			ModelState.AddModelError("", "Неправильный логин и (или) пароль");
 			return View("Login");
-			
+
+		}
+		
+		public async Task<IActionResult> Logout()
+		{
+			// удаляем аутентификационные куки
+			await _accountLoginHandler.LogOutAsync();
+			return RedirectToAction(nameof(MainController.StartPage), nameof(MainController).GetNameOfController());
 		}
 	}
 }
