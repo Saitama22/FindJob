@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using FindJob.Models.Interfaces.ViewModels;
 
 namespace FindJob.Models.ViewModels
 {
-	public class Resume : ViewModelBase<Resume>
+	public class Resume : IViewModelBase<Resume>
 	{
 		public Guid Id { get; set; }
 

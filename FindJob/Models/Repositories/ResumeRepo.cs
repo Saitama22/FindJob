@@ -9,29 +9,29 @@ using FindJob.Models.ViewModels;
 namespace FindJob.Models.Repositories
 {
 	internal class ResumeRepo : IResumeRepo
-	{
-		private FjDbContext _context;
+	{		
+		private FjDbContext Context { get ; set ; }
 
 		public ResumeRepo(FjDbContext context)
 		{
-			_context = context;
+			Context = context;
 		}
 
-		public IEnumerable<Resume> Resumes => _context.Resumes;
+		public IEnumerable<Resume> Resumes => Context.Resumes;
 
 		public async Task CreateOrUpdateAsync(Resume resume)
 		{
 			if (resume.Id == Guid.Empty)
 			{
 				resume.Id = Guid.NewGuid();
-				await _context.Resumes.AddAsync(resume);
+				await Context.Resumes.AddAsync(resume);
 			}
 			else
 			{
-				var dbResume = _context.Resumes.FirstOrDefault(r => r.Id == resume.Id);
+				var dbResume = Context.Resumes.FirstOrDefault(r => r.Id == resume.Id);
 				dbResume.Update(resume);
 			}
-			await _context.SaveChangesAsync();
+			await Context.SaveChangesAsync();
 		}
 
 		public async Task DeleteAsync(Guid guid)
@@ -42,13 +42,14 @@ namespace FindJob.Models.Repositories
 
 		public async Task DeleteAsync(Resume resume)
 		{
-			_context.Resumes.Remove(resume);
-			await _context.SaveChangesAsync();
+			Context.Resumes.Remove(resume);
+			await Context.SaveChangesAsync();
 		}
 
 		public Resume GetByGuid(Guid guid)
 		{
 			return Resumes.FirstOrDefault(r => r.Id == guid);
 		}
+
 	}
 }

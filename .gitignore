@@ -13,3 +13,4 @@
 *.v2
 *.testlog
 *.manifest
+/FindJob/wwwroot/lib/twitter-bootstrap

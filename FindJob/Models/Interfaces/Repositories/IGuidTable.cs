@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace FindJob.Models.Interfaces.Repositories
 {
-	public interface IGuidTable<T> 
+	public interface IGuidTable<T> : IRepo<T>
 	{
 		T GetByGuid(Guid guid);
 

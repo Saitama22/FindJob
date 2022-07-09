@@ -4,19 +4,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using FindJob.Models.Interfaces.Repositories;
 using FindJob.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FindJob.Controllers
 {
+	[Authorize]
 	public class WorkerController : Controller
 	{
 		private readonly IResumeRepo _resumeRepo;
-
+			
 		public WorkerController(IResumeRepo resumeRepo)
 		{
 			_resumeRepo = resumeRepo;
 		}
-
 		public IActionResult Create(Guid resumeId)
 		{
 			return View(_resumeRepo.GetByGuid(resumeId));

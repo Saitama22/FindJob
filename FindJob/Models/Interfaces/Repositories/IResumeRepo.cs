@@ -4,8 +4,8 @@ using FindJob.Models.ViewModels;
 
 namespace FindJob.Models.Interfaces.Repositories
 {
-	public interface IResumeRepo: IRepo<Resume>, IGuidTable<Resume>
+	public interface IResumeRepo:  IGuidTable<Resume>
 	{
-		public IEnumerable<Resume> Resumes { get; }		
+		public IEnumerable<Resume> Resumes { get; }
 	}
 }

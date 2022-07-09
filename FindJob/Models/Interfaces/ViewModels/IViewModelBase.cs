@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FindJob.Models.ViewModels
+namespace FindJob.Models.Interfaces.ViewModels
 {
-	public class Vacancy
+	interface IViewModelBase<T>
 	{
-
+		void Update(T newModel);
 	}
 }

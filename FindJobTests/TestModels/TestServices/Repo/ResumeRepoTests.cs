@@ -5,13 +5,12 @@ using FindJob.Models.Interfaces.Repositories;
 using FindJob.Models.ViewModels;
 using NUnit.Framework;
 
-
 namespace FindJobTests.TestModels.TestSevices.Repo
 {
 	public class ResumeRepoTests : BaseInitTest
     {
 		private IResumeRepo _resumeRepo;
-        Random _random = new Random();
+		private readonly Random _random = new();
 
         [Test]
         public async Task FullTest()

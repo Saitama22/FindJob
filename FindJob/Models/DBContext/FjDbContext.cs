@@ -10,6 +10,8 @@ namespace FindJob.Models.DBContext
 	public class FjDbContext : DbContext
 	{
 		public DbSet<Resume> Resumes { get; set; }
+
+		public DbSet<UserFj> Users { get; set; }
 		//public FjDbContext()
 		//{
 		//	Database.EnsureCreated();
