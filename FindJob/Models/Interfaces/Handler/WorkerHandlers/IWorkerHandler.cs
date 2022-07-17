@@ -15,5 +15,7 @@ namespace FindJob.Models.Interfaces.Handler.WorkerHandlers
 		IEnumerable<Resume> GetUserResumes(string userName);
 
 		Task RemoveResume(Guid resumeId);
+
+		IEnumerable<Vacancy> GetVacancies();
 	}
 }

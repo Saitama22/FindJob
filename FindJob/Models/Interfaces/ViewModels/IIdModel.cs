@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace FindJob.Models.Interfaces.ViewModels
 {
-	public interface IViewModelBase<T>
+	public interface IIdModel
 	{
-		void Update(T newModel);
+		Guid Id { get; set; }
 	}
 }

@@ -32,7 +32,7 @@ namespace FindJob
 		public static IServiceCollection AddRepositories(this IServiceCollection services)
 		{
 			services.AddTransient<IResumeRepo, ResumeRepo>();
-			services.AddTransient<IUsersRepo, UsersRepo>();
+			services.AddTransient<IVacancyRepo, VacancyRepo>();
 			return services;
 		}
 

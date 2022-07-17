@@ -11,10 +11,12 @@ namespace FindJob.Models.Handlers.WorkerHandlers
 	public class WorkerHandler : IWorkerHandler
 	{
 		private readonly IResumeRepo _resumeRepo;
+		private readonly IVacancyRepo _vacancyRepo;
 
-		public WorkerHandler(IResumeRepo resumeRepo)
+		public WorkerHandler(IResumeRepo resumeRepo, IVacancyRepo vacancyRepo)
 		{
 			_resumeRepo = resumeRepo;
+			_vacancyRepo = vacancyRepo;
 		}
 
 		public async Task AddToResumeRepo(Resume resume, string userName)
@@ -31,6 +33,11 @@ namespace FindJob.Models.Handlers.WorkerHandlers
 		public IEnumerable<Resume> GetUserResumes(string userName)
 		{
 			return _resumeRepo.Resumes.Where(r => r.UserName == userName);
+		}
+
+		public IEnumerable<Vacancy> GetVacancies()
+		{
+			return _vacancyRepo.Vacancies;
 		}
 
 		public async Task RemoveResume(Guid resumeId)

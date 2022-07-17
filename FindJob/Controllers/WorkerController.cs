@@ -42,5 +42,10 @@ namespace FindJob.Controllers
 			await _workerHandler.RemoveResume(resumeId);			
 			return RedirectToAction(nameof(Resumes));
 		}
+
+		public IActionResult Vacancies()
+		{
+			return View(_workerHandler.GetVacancies());
+		}
 	}
 }
