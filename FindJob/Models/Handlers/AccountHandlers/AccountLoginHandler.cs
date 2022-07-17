@@ -15,6 +15,7 @@ namespace FindJob.Models.Handlers.AccountHandlers
 		private readonly SignInManager<UserFj> _signInManager;
 		private readonly UserManager<UserFj> _userManager;
 		private HttpContext _httpContext;
+		private string _curUserName;
 
 		public HttpContext HttpContext
 		{
@@ -40,7 +41,8 @@ namespace FindJob.Models.Handlers.AccountHandlers
 
 			if (resultLogin.Succeeded)
 			{
-				return true;
+				_curUserName = loginModel.UserName;
+				return true;				
 			}
 
 			return false;
@@ -65,6 +67,7 @@ namespace FindJob.Models.Handlers.AccountHandlers
 					await _userManager.AddToRoleAsync(user, "Employer");
 				}
 				await _signInManager.SignInAsync(user, false);
+				_curUserName = user.UserName;
 				return null;
 			}
 			else
@@ -74,6 +77,17 @@ namespace FindJob.Models.Handlers.AccountHandlers
 		public async Task LogOutAsync()
 		{
 			await _signInManager.SignOutAsync();
+		}
+
+		public async Task<Roles> GetRoleAsync(HttpContext httpContext)
+		{
+			var user = _userManager.Users.FirstOrDefault(r => r.UserName == _curUserName);
+			var roles = await _userManager.GetRolesAsync(user);
+			if (roles.Contains(Roles.Employer.ToString()))
+				return Roles.Employer;
+			if (roles.Contains(Roles.Worker.ToString()))
+				return Roles.Worker;
+			throw new NotSupportedException("Нет роли! Штаааааа?!?!?");			
 		}
 	}
 }

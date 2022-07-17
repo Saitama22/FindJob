@@ -3,15 +3,17 @@ using System;
 using FindJob.Models.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FindJob.Migrations
 {
     [DbContext(typeof(FjDbContext))]
-    partial class FjDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220717133858_UserNameColumnResumes")]
+    partial class UserNameColumnResumes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

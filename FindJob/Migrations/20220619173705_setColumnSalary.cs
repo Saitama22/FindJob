@@ -2,8 +2,10 @@
 
 namespace FindJob.Migrations
 {
-    public partial class setColumnSalary : Migration
-    {
+#pragma warning disable IDE1006 // Стили именования
+	public partial class setColumnSalary : Migration
+#pragma warning restore IDE1006 // Стили именования
+	{
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<double>(

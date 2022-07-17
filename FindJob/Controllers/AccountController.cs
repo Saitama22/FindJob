@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using FindJob.Models.Enums;
 using FindJob.Models.Helper;
 using FindJob.Models.Interfaces.Handler.AccountHandlers;
 using FindJob.Models.ViewModels;
@@ -13,7 +15,6 @@ namespace FindJob.Controllers
 		public AccountController(IAccountLoginHandler accountLoginHandler)
 		{
 			_accountLoginHandler = accountLoginHandler;
-			_accountLoginHandler.HttpContext = HttpContext;
 		}
 
 		[HttpGet]
@@ -36,8 +37,11 @@ namespace FindJob.Controllers
 
 			var errorsRegister = await _accountLoginHandler.TryRegister(registerModel);
 
-			if (errorsRegister == null)
+			if (await _accountLoginHandler.GetRoleAsync(HttpContext) == Roles.Worker)
 				return RedirectToAction(nameof(WorkerController.Create), nameof(WorkerController).GetNameOfController());
+
+			if (await _accountLoginHandler.GetRoleAsync(HttpContext) == Roles.Employer)
+				throw new NotImplementedException();
 
 			foreach (var error in errorsRegister)
 			{
@@ -52,8 +56,15 @@ namespace FindJob.Controllers
 			if (!ModelState.IsValid)
 				return View("Login");
 
+			
 			if (await _accountLoginHandler.TryLogin(login))
-				return RedirectToAction(nameof(WorkerController.Create), nameof(WorkerController).GetNameOfController());
+			{
+				if (await _accountLoginHandler.GetRoleAsync(HttpContext) == Roles.Worker)
+					return RedirectToAction(nameof(WorkerController.Create), nameof(WorkerController).GetNameOfController());
+
+				if (await _accountLoginHandler.GetRoleAsync(HttpContext) == Roles.Employer)
+					throw new NotImplementedException();
+			}
 
 			ModelState.AddModelError("", "Неправильный логин и (или) пароль");
 			return View("Login");

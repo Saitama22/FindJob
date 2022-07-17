@@ -13,6 +13,8 @@ namespace FindJob.Models.ViewModels
 
 		public string Name { get; set; }
 
+		public string UserName { get; set; }
+
 		public string Post { get; set; }
 
 		public string Surname { get; set; }
