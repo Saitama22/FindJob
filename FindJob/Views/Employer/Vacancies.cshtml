@@ -1,0 +1,13 @@
+﻿@model IEnumerable<Vacancy>
+@{
+    ViewBag.Title = "Vacancies";
+    Layout = "_EmployerLayout";
+}
+
+@foreach (var vacancy in Model)
+{
+<div>
+    <a asp-action="Create" asp-route-resumeId="@vacancy.Id">@vacancy.Post</a>
+    <a asp-action="Delete" asp-route-resumeId="@vacancy.Id">Delete</a>
+</div>
+}

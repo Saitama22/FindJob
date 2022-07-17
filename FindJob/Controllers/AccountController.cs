@@ -41,7 +41,7 @@ namespace FindJob.Controllers
 				return RedirectToAction(nameof(WorkerController.Create), nameof(WorkerController).GetNameOfController());
 
 			if (await _accountLoginHandler.GetRoleAsync(HttpContext) == Roles.Employer)
-				throw new NotImplementedException();
+				return RedirectToAction(nameof(EmployerController.Create), nameof(EmployerController).GetNameOfController());
 
 			foreach (var error in errorsRegister)
 			{
@@ -63,7 +63,7 @@ namespace FindJob.Controllers
 					return RedirectToAction(nameof(WorkerController.Create), nameof(WorkerController).GetNameOfController());
 
 				if (await _accountLoginHandler.GetRoleAsync(HttpContext) == Roles.Employer)
-					throw new NotImplementedException();
+					return RedirectToAction(nameof(EmployerController.Create), nameof(EmployerController).GetNameOfController());
 			}
 
 			ModelState.AddModelError("", "Неправильный логин и (или) пароль");

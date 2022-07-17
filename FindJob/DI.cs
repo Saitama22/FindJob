@@ -1,7 +1,9 @@
 ﻿using FindJob.Models.DBContext;
 using FindJob.Models.Handlers.AccountHandlers;
+using FindJob.Models.Handlers.EmployerHandlers;
 using FindJob.Models.Handlers.WorkerHandlers;
 using FindJob.Models.Interfaces.Handler.AccountHandlers;
+using FindJob.Models.Interfaces.Handler.EmployerHandlers;
 using FindJob.Models.Interfaces.Handler.WorkerHandlers;
 using FindJob.Models.Interfaces.Repositories;
 using FindJob.Models.Repositories;
@@ -50,6 +52,7 @@ namespace FindJob
 		{
 			services.AddScoped<IAccountLoginHandler, AccountLoginHandler>();
 			services.AddScoped<IWorkerHandler, WorkerHandler>();
+			services.AddScoped<IEmployerHandler, EmployerHandler>();
 			return services;
 		}
 
