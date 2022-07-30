@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FindJob.Models.Enums;
 using FindJob.Models.Interfaces.Handler.AccountHandlers;
+using FindJob.Models.Interfaces.Services;
 using FindJob.Models.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
 namespace FindJob.Models.Handlers.AccountHandlers
@@ -14,47 +13,49 @@ namespace FindJob.Models.Handlers.AccountHandlers
 	{
 		private readonly SignInManager<UserFj> _signInManager;
 		private readonly UserManager<UserFj> _userManager;
-		private HttpContext _httpContext;
 		private string _curUserName;
-
-		public HttpContext HttpContext
-		{
-			get => _httpContext;
-			set
-			{
-				if (_httpContext != null)
-					throw new Exception("Уже инициализировано");
-				_httpContext = value;
-			}
-		}
-
+		private readonly IMailSender _mailSender;
 		public AccountLoginHandler(SignInManager<UserFj> signInManager,
-			UserManager<UserFj> userManager)
+			UserManager<UserFj> userManager, IMailSender mailSender)
 		{
 			_signInManager = signInManager;
 			_userManager = userManager;
+			_mailSender = mailSender;
 		}
 
-		public async Task<bool> TryLogin(LoginModel loginModel)
+		public async Task<Result> TryLogin(LoginModel loginModel)
 		{
-			var resultLogin = await _signInManager.PasswordSignInAsync(loginModel.UserName, loginModel.Password, loginModel.RememberMe, false);
+			SignInResult resultLogin;
+			if (loginModel.UserName.Contains("@"))
+			{
+				var user = await _userManager.FindByEmailAsync(loginModel.UserName);
+				if (user == null)
+					return Result.OneError("Не найден пользователь по данному email");
+				resultLogin = await _signInManager.PasswordSignInAsync(user.UserName, loginModel.Password, loginModel.RememberMe, false);
+				loginModel.UserName = user.UserName;
+			}
+			else
+				resultLogin = await _signInManager.PasswordSignInAsync(loginModel.UserName, loginModel.Password, loginModel.RememberMe, false);
 
 			if (resultLogin.Succeeded)
 			{
 				_curUserName = loginModel.UserName;
-				return true;				
+				return Result.SuccessResult();
 			}
-
-			return false;
+			return Result.OneError("Неудачная попытка входа");
 		}
 
-		public async Task<IEnumerable<string>> TryRegister(RegisterModel registerModel)
+		public async Task<Result> TryRegister(RegisterModel registerModel)
 		{
+			if (registerModel.UserName != null && registerModel.UserName.Contains("@"))
+				return Result.OneError("UserName не должно содержать @");
+
 			UserFj user = new() 
 			{ 
 				Email = registerModel.Email, 
 				UserName = registerModel.UserName ?? registerModel.Email,
 			};
+
 			var resultCreate = await _userManager.CreateAsync(user, registerModel.Password);
 			if (resultCreate.Succeeded)
 			{
@@ -62,16 +63,16 @@ namespace FindJob.Models.Handlers.AccountHandlers
 				{
 					await _userManager.AddToRoleAsync(user, "Worker");
 				}
-				else if(registerModel.Role == Roles.Employer)
+				else if (registerModel.Role == Roles.Employer)
 				{
 					await _userManager.AddToRoleAsync(user, "Employer");
 				}
 				await _signInManager.SignInAsync(user, false);
 				_curUserName = user.UserName;
-				return null;
+				return Result.SuccessResult();
 			}
 			else
-				return resultCreate.Errors.Select(e => e.Description);
+				return Result.ManyError(resultCreate.Errors.Select(e => e.Description));
 		}
 
 		public async Task LogOutAsync()
@@ -79,15 +80,22 @@ namespace FindJob.Models.Handlers.AccountHandlers
 			await _signInManager.SignOutAsync();
 		}
 
-		public async Task<Roles> GetRoleAsync(HttpContext httpContext)
+		public async Task<Roles> GetRoleAsync()
 		{
-			var user = _userManager.Users.FirstOrDefault(r => r.UserName == _curUserName);
+			var user = await _userManager.FindByNameAsync(_curUserName);
 			var roles = await _userManager.GetRolesAsync(user);
 			if (roles.Contains(Roles.Employer.ToString()))
 				return Roles.Employer;
 			if (roles.Contains(Roles.Worker.ToString()))
 				return Roles.Worker;
-			throw new NotSupportedException("Нет роли! Штаааааа?!?!?");			
+			throw new NotSupportedException("Нет роли!");			
+		}
+
+		public async Task<Result> RememberAsync(string email)
+		{
+			if (await _userManager.FindByEmailAsync(email) == null)
+				return Result.OneError("Не найден данный email");
+			return await _mailSender.SendRestorePasswordAsync(email); 
 		}
 	}
 }

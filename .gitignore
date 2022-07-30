@@ -14,3 +14,4 @@
 *.testlog
 *.manifest
 /FindJob/wwwroot/lib/twitter-bootstrap
+/FindJob/MailConfig.json

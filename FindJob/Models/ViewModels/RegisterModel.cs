@@ -10,7 +10,7 @@ namespace FindJob.Models.ViewModels
 	public class RegisterModel
 	{
 		[Required(ErrorMessage = "Не указан Email")]
-		//[DataType(DataType.EmailAddress)]
+		[DataType(DataType.EmailAddress)]
 		public string Email { get; set; }
 
 		public string UserName { get; set; }

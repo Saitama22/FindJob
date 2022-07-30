@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FindJob.Models.Enums;
 using FindJob.Models.Helper;
@@ -35,18 +36,11 @@ namespace FindJob.Controllers
 			if (!ModelState.IsValid)
 				return View("Register");
 
-			var errorsRegister = await _accountLoginHandler.TryRegister(registerModel);
+			var result = await _accountLoginHandler.TryRegister(registerModel);
+			if (result.Succeeded)
+				return await GetViewByRoleAsync();
 
-			if (await _accountLoginHandler.GetRoleAsync(HttpContext) == Roles.Worker)
-				return RedirectToAction(nameof(WorkerController.Create), nameof(WorkerController).GetNameOfController());
-
-			if (await _accountLoginHandler.GetRoleAsync(HttpContext) == Roles.Employer)
-				return RedirectToAction(nameof(EmployerController.Create), nameof(EmployerController).GetNameOfController());
-
-			foreach (var error in errorsRegister)
-			{
-				ModelState.AddModelError("", error);
-			}
+			AddErrors(result.Errors);
 			return View("Register");
 		}
 
@@ -56,26 +50,57 @@ namespace FindJob.Controllers
 			if (!ModelState.IsValid)
 				return View("Login");
 
-			
-			if (await _accountLoginHandler.TryLogin(login))
-			{
-				if (await _accountLoginHandler.GetRoleAsync(HttpContext) == Roles.Worker)
-					return RedirectToAction(nameof(WorkerController.Create), nameof(WorkerController).GetNameOfController());
+			var result = await _accountLoginHandler.TryLogin(login);
+			if (result.Succeeded)
+				return await GetViewByRoleAsync();
 
-				if (await _accountLoginHandler.GetRoleAsync(HttpContext) == Roles.Employer)
-					return RedirectToAction(nameof(EmployerController.Create), nameof(EmployerController).GetNameOfController());
-			}
-
-			ModelState.AddModelError("", "Неправильный логин и (или) пароль");
+			AddErrors(result.Errors);
 			return View("Login");
 
 		}
-		
+
+		private void AddErrors(IEnumerable<string> errors)
+		{
+			foreach (var error in errors)
+			{
+				ModelState.AddModelError("", error);
+			}
+		}
+
 		public async Task<IActionResult> Logout()
 		{
 			// удаляем аутентификационные куки
 			await _accountLoginHandler.LogOutAsync();
 			return RedirectToAction(nameof(MainController.StartPage), nameof(MainController).GetNameOfController());
+		}
+
+		[HttpGet]
+		public IActionResult Remember()
+		{			
+			return View();
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Remember(OneEmail oneEmail)
+		{
+			var result = await _accountLoginHandler.RememberAsync(oneEmail.Email);
+			if (result.Succeeded)
+				return View(nameof(Login));			
+			AddErrors(result.Errors);
+			return View();
+		}
+
+		public async Task<RedirectToActionResult> GetViewByRoleAsync()
+		{
+			var role = await _accountLoginHandler.GetRoleAsync();
+
+			if (role == Roles.Worker)
+				return RedirectToAction(nameof(WorkerController.Create), nameof(WorkerController).GetNameOfController());
+
+			if (role == Roles.Employer)
+				return RedirectToAction(nameof(EmployerController.Create), nameof(EmployerController).GetNameOfController());
+
+			throw new NotSupportedException($"Не реализовано для роли {role}");
 		}
 	}
 }

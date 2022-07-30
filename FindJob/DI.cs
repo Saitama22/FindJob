@@ -1,4 +1,5 @@
-﻿using FindJob.Models.DBContext;
+﻿using System;
+using FindJob.Models.DBContext;
 using FindJob.Models.Handlers.AccountHandlers;
 using FindJob.Models.Handlers.EmployerHandlers;
 using FindJob.Models.Handlers.WorkerHandlers;
@@ -6,7 +7,9 @@ using FindJob.Models.Interfaces.Handler.AccountHandlers;
 using FindJob.Models.Interfaces.Handler.EmployerHandlers;
 using FindJob.Models.Interfaces.Handler.WorkerHandlers;
 using FindJob.Models.Interfaces.Repositories;
+using FindJob.Models.Interfaces.Services;
 using FindJob.Models.Repositories;
+using FindJob.Models.Services;
 using FindJob.Models.ViewModels;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
@@ -26,8 +29,14 @@ namespace FindJob
 				.AddDbContexts()
 				.AddAutorisation()
 				.AddRepositories()
-				.AddHandlers();
+				.AddHandlers()
+				.AddServices();
+			return services;
+		}
 
+		private static IServiceCollection AddServices(this IServiceCollection services)
+		{
+			services.AddTransient<IMailSender, MailSender>();
 			return services;
 		}
 
