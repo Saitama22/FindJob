@@ -96,6 +96,22 @@ namespace FindJob.Models.Handlers.AccountHandlers
 			if (await _userManager.FindByEmailAsync(email) == null)
 				return Result.OneError("Не найден данный email");
 			return await _mailSender.SendRestorePasswordAsync(email); 
+			
+		}
+
+		public async Task<Result> RestoreAsync(RestorePasswordModel resetPasswordModel)
+		{
+			var user = await _userManager.FindByEmailAsync(resetPasswordModel.Email);
+			if (user == null)
+				return Result.OneError("Не найден пользователь по данному email");
+			var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+			var result = await _userManager.ResetPasswordAsync(user, token, resetPasswordModel.Password);
+			if (result.Succeeded)
+			{
+				_curUserName = user.UserName;
+				return Result.SuccessResult();
+			}
+			return Result.OneError("Неудачная попытка входа");
 		}
 	}
 }

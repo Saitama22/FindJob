@@ -54,6 +54,7 @@ namespace FindJob
 				{
 					options.LoginPath = new PathString("/Account/Login");
 				});
+			//services. AddTokenProvider<DataProtectorTokenProvider<CustomerUser>>(TokenOptions.DefaultProvider);
 			return services;
 		}
 
@@ -81,7 +82,8 @@ namespace FindJob
 					opt.Password.RequireUppercase = false;
 					opt.Password.RequireNonAlphanumeric = false;
 				})
-			.AddEntityFrameworkStores<FjDbUsersContext>();
+				.AddTokenProvider<DataProtectorTokenProvider<UserFj>>(TokenOptions.DefaultProvider)
+				.AddEntityFrameworkStores<FjDbUsersContext>();
 
 			return services;
 		}

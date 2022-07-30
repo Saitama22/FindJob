@@ -102,5 +102,20 @@ namespace FindJob.Controllers
 
 			throw new NotSupportedException($"Не реализовано для роли {role}");
 		}
+
+		public IActionResult Restore()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Restore(RestorePasswordModel resetPasswordModel)
+		{
+			var result = await _accountLoginHandler.RestoreAsync(resetPasswordModel);
+			if (result.Succeeded)
+				return await GetViewByRoleAsync();
+			AddErrors(result.Errors);
+			return View(nameof(Login));
+		}
 	}
 }

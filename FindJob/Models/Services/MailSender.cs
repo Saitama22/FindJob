@@ -27,7 +27,7 @@ namespace FindJob.Models.Services
 
 		public async Task<Result> SendRestorePasswordAsync(string email)
 		{
-			return await SendEmailAsync(email, "Восстановление пароля", "temp");
+			return await SendEmailAsync(email, "Восстановление пароля", "https://localhost:44306/Account/restore");
 		}
 
 		public async Task<Result> SendEmailAsync(string email, string subject, string message)

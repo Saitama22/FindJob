@@ -18,5 +18,6 @@ namespace FindJob.Models.Interfaces.Handler.AccountHandlers
 		Task<Roles> GetRoleAsync();
 	//	Result RememberAsync(string email);
 		Task<Result> RememberAsync(string email);
+		Task<Result> RestoreAsync(RestorePasswordModel resetPasswordModel);
 	}
 }
