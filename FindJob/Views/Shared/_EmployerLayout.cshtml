@@ -1,0 +1,11 @@
+﻿<title>@ViewBag.Title</title>
+<body>
+    <nav class="navbar navbar-light navbar-brand" style="background-color: #ffffff;">
+        <a asp-action="Create" asp-controller="Employer">Create resume</a>
+        <a asp-action="Resumes" asp-controller="Employer">Resumes</a>
+        <a asp-action="Vacancies" asp-controller="Employer">My vacancies</a>
+        <a asp-action="Logout" asp-controller="Account">LogOut</a>
+    </nav>
+
+    @RenderBody()
+</body>

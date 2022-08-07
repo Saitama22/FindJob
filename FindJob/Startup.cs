@@ -1,3 +1,4 @@
+using FindJob.Models.DBContext;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,12 +31,14 @@ namespace FindJob
             app.UseRouting();
             app.UseStaticFiles();
             app.UseStatusCodePages();
+            app.UseAuthentication();    
+            app.UseAuthorization();     
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Main}/{Action=StartPage}");
             });
         }
     }

@@ -1,0 +1,12 @@
+﻿@model IEnumerable<Resume>
+@{ 
+    ViewBag.Title = "Resumes";
+    Layout = "_EmployerLayout";
+}
+
+@foreach (var resume in Model)
+{
+<div>
+    <p>@resume.Post</p>
+</div>
+}

@@ -1,0 +1,15 @@
+﻿@model OneEmail;
+@{
+    ViewBag.Title = "Remember";
+    Layout = "_Account";
+}
+<form asp-action="Remember" method="post">
+    <div asp-validation-summary="All"></div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" />
+    </div>
+    <div class="form-group">
+        <button type="submit">Войти</button>
+    </div>
+</form>
