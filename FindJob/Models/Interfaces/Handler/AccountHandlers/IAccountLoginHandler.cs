@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using FindJob.Models.Enums;
+using FindJob.Models.ParamModels;
 using FindJob.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,6 @@ namespace FindJob.Models.Interfaces.Handler.AccountHandlers
 		Task<Result> TryRegister(RegisterModel registerModel);
 		Task<Result> TryLogin(LoginModel loginModel);
 		Task<Roles> GetRoleAsync();
-	//	Result RememberAsync(string email);
 		Task<Result> RememberAsync(string email);
 		Task<Result> RestoreAsync(RestorePasswordModel resetPasswordModel);
 	}

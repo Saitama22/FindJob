@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using FindJob.Models.Enums;
 using FindJob.Models.Interfaces.Handler.AccountHandlers;
 using FindJob.Models.Interfaces.Services;
+using FindJob.Models.ParamModels;
 using FindJob.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 
@@ -30,7 +31,7 @@ namespace FindJob.Models.Handlers.AccountHandlers
 			{
 				var user = await _userManager.FindByEmailAsync(loginModel.UserName);
 				if (user == null)
-					return Result.OneError("Не найден пользователь по данному email");
+					return Result.ErrorResult("Не найден пользователь по данному email");
 				resultLogin = await _signInManager.PasswordSignInAsync(user.UserName, loginModel.Password, loginModel.RememberMe, false);
 				loginModel.UserName = user.UserName;
 			}
@@ -42,13 +43,13 @@ namespace FindJob.Models.Handlers.AccountHandlers
 				_curUserName = loginModel.UserName;
 				return Result.SuccessResult();
 			}
-			return Result.OneError("Неудачная попытка входа");
+			return Result.ErrorResult("Неудачная попытка входа");
 		}
 
 		public async Task<Result> TryRegister(RegisterModel registerModel)
 		{
 			if (registerModel.UserName != null && registerModel.UserName.Contains("@"))
-				return Result.OneError("UserName не должно содержать @");
+				return Result.ErrorResult("UserName не должно содержать @");
 
 			UserFj user = new() 
 			{ 
@@ -72,7 +73,7 @@ namespace FindJob.Models.Handlers.AccountHandlers
 				return Result.SuccessResult();
 			}
 			else
-				return Result.ManyError(resultCreate.Errors.Select(e => e.Description));
+				return Result.ErrorResult(resultCreate.Errors.Select(e => e.Description));
 		}
 
 		public async Task LogOutAsync()
@@ -93,17 +94,25 @@ namespace FindJob.Models.Handlers.AccountHandlers
 
 		public async Task<Result> RememberAsync(string email)
 		{
-			if (await _userManager.FindByEmailAsync(email) == null)
-				return Result.OneError("Не найден данный email");
-			return await _mailSender.SendRestorePasswordAsync(email); 
-			
+			var user = await _userManager.FindByEmailAsync(email);
+			if (user == null)
+				return Result.ErrorResult("Не найден пользователь по данному email");
+			var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+			var newPasword = Guid.NewGuid().ToString().Substring(0, 6);
+			var result = await _userManager.ResetPasswordAsync(user, token, newPasword);
+
+			if (!result.Succeeded)
+				Result.ErrorResult(result.Errors.Select(r => r.Description));
+
+			return await _mailSender.SendRestorePasswordAsync(email, newPasword); 			
 		}
 
 		public async Task<Result> RestoreAsync(RestorePasswordModel resetPasswordModel)
 		{
 			var user = await _userManager.FindByEmailAsync(resetPasswordModel.Email);
 			if (user == null)
-				return Result.OneError("Не найден пользователь по данному email");
+				return Result.ErrorResult("Не найден пользователь по данному email");
 			var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 			var result = await _userManager.ResetPasswordAsync(user, token, resetPasswordModel.Password);
 			if (result.Succeeded)
@@ -111,7 +120,7 @@ namespace FindJob.Models.Handlers.AccountHandlers
 				_curUserName = user.UserName;
 				return Result.SuccessResult();
 			}
-			return Result.OneError("Неудачная попытка входа");
+			return Result.ErrorResult("Неудачная попытка входа");
 		}
 	}
 }

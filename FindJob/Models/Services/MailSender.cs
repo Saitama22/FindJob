@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using FindJob.Models.Interfaces.Services;
+using FindJob.Models.ParamModels;
 using FindJob.Models.ViewModels;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
@@ -25,9 +26,9 @@ namespace FindJob.Models.Services
 			config = builder.Build();
 		}
 
-		public async Task<Result> SendRestorePasswordAsync(string email)
+		public async Task<Result> SendRestorePasswordAsync(string email, string newPassword)
 		{
-			return await SendEmailAsync(email, "Восстановление пароля", "https://localhost:44306/Account/restore");
+			return await SendEmailAsync(email, "Восстановление пароля", $"Ваш новй пароль: {newPassword}");
 		}
 
 		public async Task<Result> SendEmailAsync(string email, string subject, string message)
@@ -51,7 +52,7 @@ namespace FindJob.Models.Services
 			}
 			catch (Exception ex)
 			{
-				return Result.OneError(ex.Message);
+				return Result.ErrorResult(ex.Message);
 			}
 			return Result.SuccessResult();
 		}

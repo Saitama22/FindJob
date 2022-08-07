@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace FindJob.Models.ViewModels
+namespace FindJob.Models.ParamModels
 {
 	public class Result
 	{
 		public bool Succeeded { get; set; }
 
 		public IEnumerable<string> Errors { get; set; } = new List<string>();
+
+		public IEnumerable<string> ResultInfo { get; set; }
 
 		public void AddError(string error)
 		{
@@ -32,7 +32,30 @@ namespace FindJob.Models.ViewModels
 			};
 		}
 
-		public static Result OneError(string error)
+		public static Result SuccessResult(string resultInfo)
+		{
+			var res = new Result
+			{
+				Succeeded = true,	
+			};
+			res.ResultInfo.Append(resultInfo);
+			return res;
+		}
+
+		public static Result SuccessResult(IEnumerable<string> resultInfos)
+		{
+			var res = new Result
+			{
+				Succeeded = true,	
+			};
+			foreach (var resultInfo in resultInfos)
+			{
+				res.ResultInfo.Append(resultInfo);
+			}
+			return res;
+		}
+
+		public static Result ErrorResult(string error)
 		{
 			var res = new Result
 			{
@@ -42,7 +65,7 @@ namespace FindJob.Models.ViewModels
 			return res;
 		}
 
-		public static Result ManyError(IEnumerable<string> errors)
+		public static Result ErrorResult(IEnumerable<string> errors)
 		{
 			var res = new Result
 			{

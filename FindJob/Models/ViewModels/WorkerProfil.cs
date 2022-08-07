@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace FindJob.Models.ViewModels
+﻿namespace FindJob.Models.ViewModels
 {
 	public class WorkerProfil
 	{
@@ -12,5 +7,7 @@ namespace FindJob.Models.ViewModels
 		public string Surname { get; set; }
 
 		public string Email{ get; set; }
+
+		public byte[] Picture { get; set; }
 	}
 }
