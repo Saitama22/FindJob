@@ -4,7 +4,9 @@ namespace FindJob.Models.ViewModels
 {
 	public class RestorePasswordModel
 	{
-		public string Email { get; set; }
+		[Required(ErrorMessage = "Не указан старый пароль")]
+		[DataType(DataType.Password)]
+		public string OldPassword { get; set; }
 
 		[Required(ErrorMessage = "Не указан пароль")]
 		[DataType(DataType.Password)]
