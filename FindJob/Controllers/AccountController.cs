@@ -5,6 +5,7 @@ using FindJob.Models.Enums;
 using FindJob.Models.Helper;
 using FindJob.Models.Interfaces.Handler.AccountHandlers;
 using FindJob.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FindJob.Controllers
@@ -103,6 +104,7 @@ namespace FindJob.Controllers
 			throw new NotSupportedException($"Не реализовано для роли {role}");
 		}
 
+		[Authorize]
 		public IActionResult Restore()
 		{
 			return View();
@@ -111,11 +113,18 @@ namespace FindJob.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Restore(RestorePasswordModel resetPasswordModel)
 		{
-			var result = await _accountLoginHandler.RestoreAsync(resetPasswordModel);
+			if (!ModelState.IsValid)
+				return View("Restore");
+			var result = await _accountLoginHandler.RestoreAsync(resetPasswordModel, HttpContext.User.Identity.Name);
 			if (result.Succeeded)
 				return await GetViewByRoleAsync();
 			AddErrors(result.Errors);
-			return View(nameof(Login));
+			return View(nameof(Account));
+		}
+
+		public async Task<IActionResult> Account()
+		{
+			return View(await _accountLoginHandler.GetRoleAsync(HttpContext.User.Identity.Name));
 		}
 	}
 }

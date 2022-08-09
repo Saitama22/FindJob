@@ -26,54 +26,60 @@ namespace FindJob.Models.Handlers.AccountHandlers
 
 		public async Task<Result> TryLogin(LoginModel loginModel)
 		{
-			SignInResult resultLogin;
-			if (loginModel.UserName.Contains("@"))
+			try
 			{
-				var user = await _userManager.FindByEmailAsync(loginModel.UserName);
-				if (user == null)
-					return Result.ErrorResult("Не найден пользователь по данному email");
-				resultLogin = await _signInManager.PasswordSignInAsync(user.UserName, loginModel.Password, loginModel.RememberMe, false);
-				loginModel.UserName = user.UserName;
-			}
-			else
-				resultLogin = await _signInManager.PasswordSignInAsync(loginModel.UserName, loginModel.Password, loginModel.RememberMe, false);
+				SignInResult resultLogin;
+				var user = await GetUserFjAsync(loginModel.UserName);
+				resultLogin = await _signInManager.PasswordSignInAsync(user, loginModel.Password, loginModel.RememberMe, false);
 
-			if (resultLogin.Succeeded)
-			{
-				_curUserName = loginModel.UserName;
-				return Result.SuccessResult();
+				if (resultLogin.Succeeded)
+				{
+					_curUserName = loginModel.UserName;
+					return Result.SuccessResult();
+				}
+				return Result.ErrorResult("Неудачная попытка входа");
 			}
-			return Result.ErrorResult("Неудачная попытка входа");
+			catch (Exception ex)
+			{
+				return Result.ErrorResult(ex.Message);
+			}
 		}
 
 		public async Task<Result> TryRegister(RegisterModel registerModel)
 		{
-			if (registerModel.UserName != null && registerModel.UserName.Contains("@"))
-				return Result.ErrorResult("UserName не должно содержать @");
-
-			UserFj user = new() 
-			{ 
-				Email = registerModel.Email, 
-				UserName = registerModel.UserName ?? registerModel.Email,
-			};
-
-			var resultCreate = await _userManager.CreateAsync(user, registerModel.Password);
-			if (resultCreate.Succeeded)
+			try
 			{
-				if (registerModel.Role == Roles.Worker)
+				if (registerModel.UserName != null && registerModel.UserName.Contains("@"))
+					return Result.ErrorResult("UserName не должно содержать @");
+
+				UserFj user = new()
 				{
-					await _userManager.AddToRoleAsync(user, "Worker");
-				}
-				else if (registerModel.Role == Roles.Employer)
+					Email = registerModel.Email,
+					UserName = registerModel.UserName ?? registerModel.Email,
+				};
+
+				var resultCreate = await _userManager.CreateAsync(user, registerModel.Password);
+				if (resultCreate.Succeeded)
 				{
-					await _userManager.AddToRoleAsync(user, "Employer");
+					if (registerModel.Role == Roles.Worker)
+					{
+						await _userManager.AddToRoleAsync(user, "Worker");
+					}
+					else if (registerModel.Role == Roles.Employer)
+					{
+						await _userManager.AddToRoleAsync(user, "Employer");
+					}
+					await _signInManager.SignInAsync(user, false);
+					_curUserName = user.UserName;
+					return Result.SuccessResult();
 				}
-				await _signInManager.SignInAsync(user, false);
-				_curUserName = user.UserName;
-				return Result.SuccessResult();
+				else
+					return Result.ErrorResult(resultCreate.Errors.Select(e => e.Description));
 			}
-			else
-				return Result.ErrorResult(resultCreate.Errors.Select(e => e.Description));
+			catch (Exception ex)
+			{
+				return Result.ErrorResult(ex.Message);
+			}
 		}
 
 		public async Task LogOutAsync()
@@ -81,9 +87,10 @@ namespace FindJob.Models.Handlers.AccountHandlers
 			await _signInManager.SignOutAsync();
 		}
 
-		public async Task<Roles> GetRoleAsync()
+		public async Task<Roles> GetRoleAsync(string curUserName = null)
 		{
-			var user = await _userManager.FindByNameAsync(_curUserName);
+			curUserName ??= _curUserName; 
+			var user = await GetUserFjAsync(curUserName);
 			var roles = await _userManager.GetRolesAsync(user);
 			if (roles.Contains(Roles.Employer.ToString()))
 				return Roles.Employer;
@@ -108,11 +115,13 @@ namespace FindJob.Models.Handlers.AccountHandlers
 			return await _mailSender.SendRestorePasswordAsync(email, newPasword); 			
 		}
 
-		public async Task<Result> RestoreAsync(RestorePasswordModel resetPasswordModel)
+		public async Task<Result> RestoreAsync(RestorePasswordModel resetPasswordModel, string userName)
 		{
-			var user = await _userManager.FindByEmailAsync(resetPasswordModel.Email);
+			var user = await GetUserFjAsync(userName);
 			if (user == null)
 				return Result.ErrorResult("Не найден пользователь по данному email");
+			if (!await _userManager.CheckPasswordAsync(user, resetPasswordModel.OldPassword))
+				return Result.ErrorResult("Неверный пароль");
 			var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 			var result = await _userManager.ResetPasswordAsync(user, token, resetPasswordModel.Password);
 			if (result.Succeeded)
@@ -121,6 +130,19 @@ namespace FindJob.Models.Handlers.AccountHandlers
 				return Result.SuccessResult();
 			}
 			return Result.ErrorResult("Неудачная попытка входа");
+		}
+
+		public async Task<UserFj> GetUserFjAsync(string userNameOrEmail)
+		{
+			UserFj user;
+			if (userNameOrEmail.Contains("@"))
+				user = await _userManager.FindByEmailAsync(userNameOrEmail);
+			else
+				user = await _userManager.FindByNameAsync(userNameOrEmail);
+
+			if (user == null)
+				throw new Exception("Не найден пользователь по данному email");
+			return user;
 		}
 	}
 }

@@ -16,8 +16,8 @@ namespace FindJob.Models.Interfaces.Handler.AccountHandlers
 		Task LogOutAsync();
 		Task<Result> TryRegister(RegisterModel registerModel);
 		Task<Result> TryLogin(LoginModel loginModel);
-		Task<Roles> GetRoleAsync();
+		Task<Roles> GetRoleAsync(string curUserName = null);
 		Task<Result> RememberAsync(string email);
-		Task<Result> RestoreAsync(RestorePasswordModel resetPasswordModel);
+		Task<Result> RestoreAsync(RestorePasswordModel resetPasswordModel, string userName);
 	}
 }
