@@ -7,7 +7,7 @@
 @foreach (var vacancy in Model)
 {
 <div>
-    <a asp-action="Create" asp-route-resumeId="@vacancy.Id">@vacancy.Post</a>
-    <a asp-action="Delete" asp-route-resumeId="@vacancy.Id">Delete</a>
+    <a asp-action="Create" asp-route-vacancyId="@vacancy.Id">@vacancy.Post</a>
+    <a asp-action="Delete" asp-route-vacancyId="@vacancy.Id">Delete</a>
 </div>
 }

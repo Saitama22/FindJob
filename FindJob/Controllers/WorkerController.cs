@@ -22,12 +22,18 @@ namespace FindJob.Controllers
 		}
 		public IActionResult Create(Guid resumeId)
 		{
-			return View(_workerHandler.GetResumeById(resumeId));
+			var resume = _workerHandler.GetResumeById(resumeId);
+			if (resume?.Image != null)
+			{
+				var base64 = Convert.ToBase64String(resume.Image.Image);
+				ViewBag.imgSrc = string.Format("data:image/jpg;base64,{0}", base64);
+			}
+			return View(resume);
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> Save(Resume resume)
-		{
+		{			
 			await _workerHandler.AddToResumeRepo(resume, HttpContext.User.Identity.Name);
 			return RedirectToAction(nameof(Resumes));
 		}

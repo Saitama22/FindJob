@@ -13,7 +13,7 @@ namespace FindJobTests.TestModels.TestSevices.Repo
 		private readonly Random _random = new();
 
         [Test]
-        public async Task FullTest()
+        public async Task CrudTest()
         {
             _resumeRepo = _serviceProvider.GetService<IResumeRepo>();
             var resume = await CreateTest();

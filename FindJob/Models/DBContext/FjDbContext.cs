@@ -13,6 +13,8 @@ namespace FindJob.Models.DBContext
 
 		public DbSet<Vacancy> Vacancies { get; set; }
 
+		public DbSet<FjImage> Images { get; set; }
+
 		//public FjDbContext()
 		//{
 		//	Database.EnsureCreated();

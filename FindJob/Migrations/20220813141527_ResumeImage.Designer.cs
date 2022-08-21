@@ -3,35 +3,23 @@ using System;
 using FindJob.Models.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FindJob.Migrations
 {
     [DbContext(typeof(FjDbContext))]
-    partial class FjDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220813141527_ResumeImage")]
+    partial class ResumeImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-            modelBuilder.Entity("FindJob.Models.ViewModels.FjImage", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<byte[]>("Image")
-                        .HasColumnType("bytea");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Images");
-                });
 
             modelBuilder.Entity("FindJob.Models.ViewModels.Resume", b =>
                 {
@@ -42,8 +30,8 @@ namespace FindJob.Migrations
                     b.Property<int?>("Expirience")
                         .HasColumnType("integer");
 
-                    b.Property<Guid?>("ImageId")
-                        .HasColumnType("uuid");
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("bytea");
 
                     b.Property<string>("Info")
                         .HasColumnType("text");
@@ -64,8 +52,6 @@ namespace FindJob.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ImageId");
 
                     b.ToTable("Resumes");
                 });
@@ -94,15 +80,6 @@ namespace FindJob.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Vacancies");
-                });
-
-            modelBuilder.Entity("FindJob.Models.ViewModels.Resume", b =>
-                {
-                    b.HasOne("FindJob.Models.ViewModels.FjImage", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId");
-
-                    b.Navigation("Image");
                 });
 #pragma warning restore 612, 618
         }

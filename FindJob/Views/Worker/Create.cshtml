@@ -3,14 +3,21 @@
     ViewBag.Title = "Create";
     Layout = "_WorkerLayout";
 }
-<form asp-action="Save" method="post">
+<form asp-action="Save" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="All"></div>
     <input type="hidden" asp-for="Id" />
+    <img src="@ViewBag.imgSrc" />
+    <div class="form-group">
+        <label asp-for="FormFile"></label>
+        <input type="file" asp-for="FormFile" id="image-input" accept="image/jpeg, image/png, image/jpg" />
+        <script src="~/js/UploadImage.js"></script>
+        <div id="display-image"></div>
+    </div>
     <div class="form-group">
         <label asp-for="Name"></label>
         <input asp-for="Name" />
     </div>
-    <div class="form-group">
+    <div class="form-group"> 
         <label asp-for="Post"></label>
         <input asp-for="Post" />
         <span asp-validation-for="Post" />
