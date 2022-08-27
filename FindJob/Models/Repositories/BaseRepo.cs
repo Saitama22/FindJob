@@ -52,5 +52,10 @@ namespace FindJob.Models.Repositories
 		{
 			return MainDbSet.FirstOrDefault(r => r.Id == guid);
 		}
+
+		public async Task Save()
+		{
+			await Context.SaveChangesAsync();
+		}
 	}
 }

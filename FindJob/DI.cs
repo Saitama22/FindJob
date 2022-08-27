@@ -44,6 +44,7 @@ namespace FindJob
 			services.AddTransient<IResumeRepo, ResumeRepo>();
 			services.AddTransient<IVacancyRepo, VacancyRepo>();
 			services.AddTransient<IImageRepo, ImageRepo>();
+			services.AddTransient<IResponseRepo, ResponseRepo>();
 			return services;
 		}
 

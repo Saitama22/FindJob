@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using FindJob.Models.Interfaces.ViewModels;
 using Microsoft.AspNetCore.Http;
@@ -28,7 +29,11 @@ namespace FindJob.Models.ViewModels
 
 		public FjImage Image { get; set; }
 
-//		public Guid ImageId { get; set; }
+		public bool IsMain { get; set; }
+
+		public List<Vacancy> Vacancies { get; set; } = new();
+
+		public List<FjResponses> Responses { get; set; } = new();
 
 		public void Update(Resume newModel) 
 		{

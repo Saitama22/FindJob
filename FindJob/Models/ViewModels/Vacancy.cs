@@ -20,6 +20,12 @@ namespace FindJob.Models.ViewModels
 
 		public string Info { get; set; }
 
+		public bool IsMain { get; set; }
+
+		public List<Resume> Resumes { get; set; } = new();
+
+		public List<FjResponses> Responses { get; set; } = new();
+
 		public void Update(Vacancy newModel)
 		{
 			throw new NotImplementedException();

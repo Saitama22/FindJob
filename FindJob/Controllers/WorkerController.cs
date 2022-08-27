@@ -40,7 +40,7 @@ namespace FindJob.Controllers
 
 		public IActionResult Resumes()
 		{
-			return View(_workerHandler.GetUserResumes(HttpContext.User.Identity.Name));
+			return View(GetUserResumes());
 		}
 
 		public async Task<IActionResult> DeleteAsync(Guid resumeId)
@@ -52,6 +52,23 @@ namespace FindJob.Controllers
 		public IActionResult Vacancies()
 		{
 			return View(_workerHandler.GetVacancies());
+		}
+
+		public async Task<IActionResult> MakeMainAsync(Guid resumeId)
+		{
+			await _workerHandler.MakeMainResumeAsync(resumeId, HttpContext.User.Identity.Name);
+			return RedirectToAction(nameof(Resumes));
+		}
+
+		public async Task<IActionResult> ResponseVacancy(Guid vacancyId)
+		{
+			await _workerHandler.AddResponseVacancyAsync(vacancyId, HttpContext.User.Identity.Name);
+			return RedirectToAction(nameof(Vacancies));
+		}
+
+		private IEnumerable<Resume> GetUserResumes()
+		{
+			return _workerHandler.GetUserResumes(HttpContext.User.Identity.Name);
 		}
 	}
 }
