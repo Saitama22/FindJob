@@ -6,7 +6,7 @@
 <form asp-action="Save" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="All"></div>
     <input type="hidden" asp-for="Id" />
-    <img src="@ViewBag.imgSrc" />
+    <img src="@ViewBag.imgSrc" height="200"  />
     <div class="form-group">
         <label asp-for="FormFile"></label>
         <input type="file" asp-for="FormFile" id="image-input" accept="image/jpeg, image/png, image/jpg" />
