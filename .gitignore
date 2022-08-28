@@ -8,6 +8,7 @@
 *.config
 /*/bin
 /*/obj
+/obj
 *.suo
 *.user
 *.v2
