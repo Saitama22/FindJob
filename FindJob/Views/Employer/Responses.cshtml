@@ -1,0 +1,12 @@
+﻿@model IEnumerable<FjResponses>;
+@{
+    ViewBag.Title = "Create";
+    Layout = "_EmployerLayout";
+}
+@foreach (var response in Model)
+{
+    <div>
+        <a asp-action="Create" asp-route-vacancyId="@response.Vacancy.Id">@response.Vacancy.Post</a>
+        <a asp-action="Resume" asp-route-resumeId="@response.Resume.Id">@response.Resume.Post</a>
+    </div>
+}

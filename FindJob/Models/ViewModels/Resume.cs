@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 using FindJob.Models.Interfaces.ViewModels;
+using Microsoft.AspNetCore.Http;
 
 namespace FindJob.Models.ViewModels
 {
@@ -25,6 +24,17 @@ namespace FindJob.Models.ViewModels
 
 		public string Info { get; set; }
 
+		[NotMapped]
+		public IFormFile FormFile { get; set; }
+
+		public FjImage Image { get; set; }
+
+		public bool IsMain { get; set; }
+
+		public List<Vacancy> Vacancies { get; set; } = new();
+
+		public List<FjResponses> Responses { get; set; } = new();
+
 		public void Update(Resume newModel) 
 		{
 			Name = newModel.Name;
@@ -33,6 +43,7 @@ namespace FindJob.Models.ViewModels
 			Expirience = newModel.Expirience;
 			Salary = newModel.Salary;
 			Info = newModel.Info;
+			Image = newModel.Image;
 		}
 	}
 }

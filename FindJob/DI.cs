@@ -1,11 +1,6 @@
-﻿using System;
-using FindJob.Models.DBContext;
-using FindJob.Models.Handlers.AccountHandlers;
-using FindJob.Models.Handlers.EmployerHandlers;
-using FindJob.Models.Handlers.WorkerHandlers;
-using FindJob.Models.Interfaces.Handler.AccountHandlers;
-using FindJob.Models.Interfaces.Handler.EmployerHandlers;
-using FindJob.Models.Interfaces.Handler.WorkerHandlers;
+﻿using FindJob.Models.DBContext;
+using FindJob.Models.Handlers;
+using FindJob.Models.Interfaces.Handler;
 using FindJob.Models.Interfaces.Repositories;
 using FindJob.Models.Interfaces.Services;
 using FindJob.Models.Repositories;
@@ -44,6 +39,8 @@ namespace FindJob
 		{
 			services.AddTransient<IResumeRepo, ResumeRepo>();
 			services.AddTransient<IVacancyRepo, VacancyRepo>();
+			services.AddTransient<IImageRepo, ImageRepo>();
+			services.AddTransient<IResponseRepo, ResponseRepo>();
 			return services;
 		}
 

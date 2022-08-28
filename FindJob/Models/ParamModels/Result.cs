@@ -38,7 +38,7 @@ namespace FindJob.Models.ParamModels
 			{
 				Succeeded = true,	
 			};
-			res.ResultInfo.Append(resultInfo);
+			_ = res.ResultInfo.Append(resultInfo);
 			return res;
 		}
 
@@ -50,7 +50,7 @@ namespace FindJob.Models.ParamModels
 			};
 			foreach (var resultInfo in resultInfos)
 			{
-				res.ResultInfo.Append(resultInfo);
+				_ = res.ResultInfo.Append(resultInfo);
 			}
 			return res;
 		}

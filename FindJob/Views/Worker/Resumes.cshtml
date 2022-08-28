@@ -3,11 +3,15 @@
     ViewBag.Title = "Resumes";
     Layout = "_WorkerLayout";
 }
-
-@foreach (var resume in Model)
+@foreach (var resume in Model.OrderBy(r => !r.IsMain))
 {
 <div>
+    @if (resume.IsMain)
+    {
+        <b>Основное</b>
+    }
     <a asp-action="Create" asp-route-resumeId="@resume.Id">@resume.Post</a>
     <a asp-action="Delete" asp-route-resumeId="@resume.Id">Delete</a>
+    <a asp-action="MakeMain" asp-route-resumeId="@resume.Id">Сделать основным</a>
 </div>
 }

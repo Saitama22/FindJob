@@ -3,15 +3,17 @@ using System;
 using FindJob.Models.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FindJob.Migrations
 {
     [DbContext(typeof(FjDbContext))]
-    partial class FjDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220813171513_Images")]
+    partial class Images
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,27 +35,6 @@ namespace FindJob.Migrations
                     b.ToTable("Images");
                 });
 
-            modelBuilder.Entity("FindJob.Models.ViewModels.FjResponses", b =>
-                {
-                    b.Property<Guid>("ResumeGuid")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("VacancyGuid")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("FjResponsesTypes")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("boolean");
-
-                    b.HasKey("ResumeGuid", "VacancyGuid");
-
-                    b.HasIndex("VacancyGuid");
-
-                    b.ToTable("Responses");
-                });
-
             modelBuilder.Entity("FindJob.Models.ViewModels.Resume", b =>
                 {
                     b.Property<Guid>("Id")
@@ -68,9 +49,6 @@ namespace FindJob.Migrations
 
                     b.Property<string>("Info")
                         .HasColumnType("text");
-
-                    b.Property<bool>("IsMain")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -106,9 +84,6 @@ namespace FindJob.Migrations
                     b.Property<string>("Info")
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsMain")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Post")
                         .HasColumnType("text");
 
@@ -123,25 +98,6 @@ namespace FindJob.Migrations
                     b.ToTable("Vacancies");
                 });
 
-            modelBuilder.Entity("FindJob.Models.ViewModels.FjResponses", b =>
-                {
-                    b.HasOne("FindJob.Models.ViewModels.Resume", "Resume")
-                        .WithMany("Responses")
-                        .HasForeignKey("ResumeGuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FindJob.Models.ViewModels.Vacancy", "Vacancy")
-                        .WithMany("Responses")
-                        .HasForeignKey("VacancyGuid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Resume");
-
-                    b.Navigation("Vacancy");
-                });
-
             modelBuilder.Entity("FindJob.Models.ViewModels.Resume", b =>
                 {
                     b.HasOne("FindJob.Models.ViewModels.FjImage", "Image")
@@ -149,16 +105,6 @@ namespace FindJob.Migrations
                         .HasForeignKey("ImageId");
 
                     b.Navigation("Image");
-                });
-
-            modelBuilder.Entity("FindJob.Models.ViewModels.Resume", b =>
-                {
-                    b.Navigation("Responses");
-                });
-
-            modelBuilder.Entity("FindJob.Models.ViewModels.Vacancy", b =>
-                {
-                    b.Navigation("Responses");
                 });
 #pragma warning restore 612, 618
         }

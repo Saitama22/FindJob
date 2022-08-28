@@ -2,21 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FindJob.Models.Interfaces.Handler.EmployerHandlers;
+using FindJob.Models.Interfaces.Handler;
 using FindJob.Models.Interfaces.Repositories;
 using FindJob.Models.ViewModels;
 
-namespace FindJob.Models.Handlers.EmployerHandlers
+namespace FindJob.Models.Handlers
 {
 	public class EmployerHandler : IEmployerHandler
 	{
 		private readonly IResumeRepo _resumeRepo;
 		private readonly IVacancyRepo _vacancyRepo;
+		private readonly IResponseRepo _responseRepo;
 
-		public EmployerHandler(IResumeRepo resumeRepo, IVacancyRepo vacancyRepo)
+		public EmployerHandler(IResumeRepo resumeRepo, IVacancyRepo vacancyRepo, IResponseRepo responseRepo)
 		{
 			_resumeRepo = resumeRepo;
 			_vacancyRepo = vacancyRepo;
+			_responseRepo = responseRepo;
 		}
 
 		public async Task AddToVacancyRepo(Vacancy vacancy, string userName)
@@ -43,6 +45,16 @@ namespace FindJob.Models.Handlers.EmployerHandlers
 		public async Task RemoveVacancy(Guid vacancyId)
 		{
 			await _vacancyRepo.DeleteAsync(vacancyId);
+		}
+
+		public IEnumerable<FjResponses> GetResponses(string name)
+		{
+			return _responseRepo.GetVacancyResponses(name);
+		}
+
+		public Resume GetResume(Guid resumeId)
+		{
+			return _resumeRepo.GetByGuid(resumeId);
 		}
 	}
 }

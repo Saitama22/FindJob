@@ -10,7 +10,7 @@ namespace FindJob.Models.Services
 {
 	public class MailSender : IMailSender
 	{
-		private IConfigurationRoot config;
+		private IConfigurationRoot _config;
 
 		public MailSender()
 		{
@@ -23,7 +23,7 @@ namespace FindJob.Models.Services
 			if (!File.Exists(jsonPath))
 				throw new Exception($"Не найден файл {jsonPath}");
 			var builder = new ConfigurationBuilder().AddJsonFile(jsonPath);
-			config = builder.Build();
+			_config = builder.Build();
 		}
 
 		public async Task<Result> SendRestorePasswordAsync(string email, string newPassword)
@@ -36,7 +36,7 @@ namespace FindJob.Models.Services
 			try
 			{
 				var emailMessage = new MimeMessage();
-				emailMessage.From.Add(new MailboxAddress("FindJob", config["Username"]));
+				emailMessage.From.Add(new MailboxAddress("FindJob", _config["Username"]));
 				emailMessage.To.Add(new MailboxAddress("", email));
 				emailMessage.Subject = subject;
 				emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -45,8 +45,8 @@ namespace FindJob.Models.Services
 				};
 
 				using var client = new MailKit.Net.Smtp.SmtpClient();
-				await client.ConnectAsync(config["Host"], int.Parse(config["Port"]), false);
-				await client.AuthenticateAsync(config["Username"], config["Password"]);
+				await client.ConnectAsync(_config["Host"], int.Parse(_config["Port"]), false);
+				await client.AuthenticateAsync(_config["Username"], _config["Password"]);
 				await client.SendAsync(emailMessage);
 				await client.DisconnectAsync(true);
 			}

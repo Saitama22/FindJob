@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using FindJob.Models.Enums;
 using FindJob.Models.Helper;
-using FindJob.Models.Interfaces.Handler.AccountHandlers;
+using FindJob.Models.Interfaces.Handler;
 using FindJob.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

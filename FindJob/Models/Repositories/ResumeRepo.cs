@@ -5,51 +5,23 @@ using System.Threading.Tasks;
 using FindJob.Models.DBContext;
 using FindJob.Models.Interfaces.Repositories;
 using FindJob.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace FindJob.Models.Repositories
 {
-	internal class ResumeRepo : IResumeRepo
-	{		
-		private FjDbContext Context { get ; set ; }
-
-		public ResumeRepo(FjDbContext context)
+	internal class ResumeRepo : BaseRepo<Resume>, IResumeRepo
+	{
+		public ResumeRepo(FjDbContext context) : base(context)
 		{
-			Context = context;
 		}
 
 		public IEnumerable<Resume> Resumes => Context.Resumes;
 
-		public async Task CreateOrUpdateAsync(Resume resume)
-		{
-			if (resume.Id == Guid.Empty)
-			{
-				resume.Id = Guid.NewGuid();
-				await Context.Resumes.AddAsync(resume);
-			}
-			else
-			{
-				var dbResume = Context.Resumes.FirstOrDefault(r => r.Id == resume.Id);
-				dbResume.Update(resume);
-			}
-			await Context.SaveChangesAsync();
-		}
+		protected override DbSet<Resume> MainDbSet => Context.Resumes;
 
-		public async Task DeleteAsync(Guid guid)
+		public override Resume GetByGuid(Guid guid)
 		{
-			var resume = GetByGuid(guid);
-			await DeleteAsync(resume);
+			return MainDbSet.Include(r => r.Image).FirstOrDefault(r => r.Id == guid);
 		}
-
-		public async Task DeleteAsync(Resume resume)
-		{
-			Context.Resumes.Remove(resume);
-			await Context.SaveChangesAsync();
-		}
-
-		public Resume GetByGuid(Guid guid)
-		{
-			return Resumes.FirstOrDefault(r => r.Id == guid);
-		}
-
 	}
 }

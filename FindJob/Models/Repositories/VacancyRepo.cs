@@ -17,10 +17,5 @@ namespace FindJob.Models.Repositories
 		public IEnumerable<Vacancy> Vacancies => Context.Vacancies;
 
 		protected override DbSet<Vacancy> MainDbSet => Context.Vacancies;
-
-		public override Vacancy GetByGuid(Guid guid)
-		{
-			return Vacancies.FirstOrDefault(r => r.Id == guid);
-		}
 	}
 }

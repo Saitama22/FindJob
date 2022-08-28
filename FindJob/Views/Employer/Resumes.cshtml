@@ -7,6 +7,6 @@
 @foreach (var resume in Model)
 {
 <div>
-    <p>@resume.Post</p>
+    <a asp-action="Resume" asp-route-resumeId="@resume.Id">@resume.Post</a>
 </div>
 }

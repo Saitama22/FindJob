@@ -8,5 +8,7 @@ namespace FindJob.Models.Interfaces.Repositories
 		Task CreateOrUpdateAsync(T model);
 
 		Task DeleteAsync(T model);
+
+		Task Save();
 	}
 }

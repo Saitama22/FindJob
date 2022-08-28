@@ -29,8 +29,9 @@ namespace FindJob.Models.Repositories
 			}
 			else
 			{
-				var dbResume = MainDbSet.FirstOrDefault(r => r.Id == model.Id);
-				dbResume.Update(model);
+				var dbModel = GetByGuid(model.Id);
+				dbModel.Update(model);
+				MainDbSet.Update(dbModel);
 			}
 			await Context.SaveChangesAsync();
 		}
@@ -47,6 +48,14 @@ namespace FindJob.Models.Repositories
 			await Context.SaveChangesAsync();
 		}
 
-		public abstract T GetByGuid(Guid guid);
+		public virtual T GetByGuid(Guid guid)
+		{
+			return MainDbSet.FirstOrDefault(r => r.Id == guid);
+		}
+
+		public async Task Save()
+		{
+			await Context.SaveChangesAsync();
+		}
 	}
 }
