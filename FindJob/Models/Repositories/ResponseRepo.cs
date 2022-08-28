@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FindJob.Models.DBContext;
 using FindJob.Models.Interfaces.Repositories;
@@ -19,7 +21,7 @@ namespace FindJob.Models.Repositories
 		public IEnumerable<FjResponses> Responses => Context.Responses;
 
 		public async Task AddResponseAsync(Resume resume, Vacancy vacancy)
-		{
+		{			
 			FjResponses fjResponses = new()
 			{
 				Resume = resume,
@@ -30,8 +32,25 @@ namespace FindJob.Models.Repositories
 				IsRead = false,
 			};
 
-			await MainDbSet.AddAsync(fjResponses);
-			await Context.SaveChangesAsync();
+			try
+			{
+				await MainDbSet.AddAsync(fjResponses);
+				await Context.SaveChangesAsync();
+			}
+			catch (Exception)
+			{
+				return;
+			}
+		}
+
+		public IEnumerable<FjResponses> GetResumeResponses(string userName)
+		{
+			return MainDbSet.Include(r => r.Resume).Include(r => r.Vacancy).Where(r => r.Resume.UserName == userName);
+		}
+
+		public IEnumerable<FjResponses> GetVacancyResponses(string userName)
+		{
+			return MainDbSet.Include(r => r.Resume).Include(r => r.Vacancy).Where(r => r.Vacancy.UserName == userName);
 		}
 	}
 }

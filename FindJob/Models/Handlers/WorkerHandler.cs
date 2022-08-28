@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FindJob.Models.Helper;
-using FindJob.Models.Interfaces.Handler.WorkerHandlers;
+using FindJob.Models.Interfaces.Handler;
 using FindJob.Models.Interfaces.Repositories;
 using FindJob.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
-namespace FindJob.Models.Handlers.WorkerHandlers
+namespace FindJob.Models.Handlers
 {
 	public class WorkerHandler : IWorkerHandler
 	{
@@ -32,12 +33,6 @@ namespace FindJob.Models.Handlers.WorkerHandlers
 				return;
 			var vacancy = _vacancyRepo.GetByGuid(vacancyId);
 			await _responseRepo.AddResponseAsync(resume, vacancy);
-
-			var rvac = _resumeRepo.GetByGuid(resume.Id).Vacancies;
-			var rres = _resumeRepo.GetByGuid(resume.Id).Responses;
-
-			var vres = _vacancyRepo.GetByGuid(vacancyId).Resumes;
-			var vres1 = _vacancyRepo.GetByGuid(vacancyId).Responses;
 		}
 
 		public async Task AddToResumeRepo(Resume resume, string userName)
@@ -57,6 +52,11 @@ namespace FindJob.Models.Handlers.WorkerHandlers
 			await _resumeRepo.CreateOrUpdateAsync(resume);
 		}
 
+		public IEnumerable<FjResponses> GetResponses(string name)
+		{
+			return _responseRepo.GetResumeResponses(name);
+		}
+
 		public Resume GetResumeById(Guid id)
 		{
 			Resume resume = _resumeRepo.GetByGuid(id);
@@ -71,6 +71,11 @@ namespace FindJob.Models.Handlers.WorkerHandlers
 		public IEnumerable<Vacancy> GetVacancies()
 		{
 			return _vacancyRepo.Vacancies;
+		}
+
+		public Vacancy GetVacancy(Guid vacancyId)
+		{
+			return  _vacancyRepo.Vacancies.FirstOrDefault(r => r.Id == vacancyId);
 		}
 
 		public async Task MakeMainResumeAsync(Guid resumeId, string userName)

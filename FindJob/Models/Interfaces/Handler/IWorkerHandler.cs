@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FindJob.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
-namespace FindJob.Models.Interfaces.Handler.WorkerHandlers
+namespace FindJob.Models.Interfaces.Handler
 {
 	public interface IWorkerHandler
 	{
@@ -20,5 +21,7 @@ namespace FindJob.Models.Interfaces.Handler.WorkerHandlers
 
 		Task MakeMainResumeAsync(Guid resumeId, string userName);
 		Task AddResponseVacancyAsync(Guid vacancyId, string name);
+		IEnumerable<FjResponses> GetResponses(string name);
+		Vacancy GetVacancy(Guid vacancyId);
 	}
 }

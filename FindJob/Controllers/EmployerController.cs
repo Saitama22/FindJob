@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using FindJob.Models.Enums;
-using FindJob.Models.Interfaces.Handler.EmployerHandlers;
+using FindJob.Models.Helper;
+using FindJob.Models.Interfaces.Handler;
 using FindJob.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -45,6 +44,18 @@ namespace FindJob.Controllers
 		public IActionResult Resumes()
 		{
 			return View(_employerHandler.GetResumes());
+		}
+
+		public IActionResult Resume(Guid resumeId)
+		{
+			var resume = _employerHandler.GetResume(resumeId);
+			ViewBag.imgSrc = ControllerHelper.GetImageString(resume);
+			return View(resume);
+		}
+
+		public IActionResult Responses()
+		{
+			return View(_employerHandler.GetResponses(HttpContext.User.Identity.Name));
 		}
 	}
 }

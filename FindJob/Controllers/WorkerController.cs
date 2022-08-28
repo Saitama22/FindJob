@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using FindJob.Models.Enums;
-using FindJob.Models.Interfaces.Handler.WorkerHandlers;
-using FindJob.Models.Interfaces.Repositories;
+using FindJob.Models.Helper;
+using FindJob.Models.Interfaces.Handler;
 using FindJob.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,11 +22,7 @@ namespace FindJob.Controllers
 		public IActionResult Create(Guid resumeId)
 		{
 			var resume = _workerHandler.GetResumeById(resumeId);
-			if (resume?.Image != null)
-			{
-				var base64 = Convert.ToBase64String(resume.Image.Image);
-				ViewBag.imgSrc = string.Format("data:image/jpg;base64,{0}", base64);
-			}
+			ViewBag.imgSrc = ControllerHelper.GetImageString(resume);
 			return View(resume);
 		}
 
@@ -64,6 +59,16 @@ namespace FindJob.Controllers
 		{
 			await _workerHandler.AddResponseVacancyAsync(vacancyId, HttpContext.User.Identity.Name);
 			return RedirectToAction(nameof(Vacancies));
+		}
+
+		public IActionResult Responses()
+		{
+			return View(_workerHandler.GetResponses(HttpContext.User.Identity.Name));
+		}
+
+		public IActionResult Vacancy(Guid vacancyId)
+		{
+			return View(_workerHandler.GetVacancy(vacancyId));
 		}
 
 		private IEnumerable<Resume> GetUserResumes()

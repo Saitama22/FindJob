@@ -9,7 +9,7 @@ using FindJob.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FindJob.Models.Interfaces.Handler.AccountHandlers
+namespace FindJob.Models.Interfaces.Handler
 {
 	public interface IAccountLoginHandler
 	{

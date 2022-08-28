@@ -2,13 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using FindJob.Models.Enums;
-using FindJob.Models.Interfaces.Handler.AccountHandlers;
+using FindJob.Models.Interfaces.Handler;
 using FindJob.Models.Interfaces.Services;
 using FindJob.Models.ParamModels;
 using FindJob.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 
-namespace FindJob.Models.Handlers.AccountHandlers
+namespace FindJob.Models.Handlers
 {
 	public class AccountLoginHandler : IAccountLoginHandler
 	{
