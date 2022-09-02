@@ -96,10 +96,10 @@ namespace FindJob.Controllers
 			var role = await _accountLoginHandler.GetRoleAsync();
 
 			if (role == Roles.Worker)
-				return RedirectToAction(nameof(WorkerController.Create), nameof(WorkerController).GetNameOfController());
+				return RedirectToAction(nameof(WorkerController.Vacancies), nameof(WorkerController).GetNameOfController());
 
 			if (role == Roles.Employer)
-				return RedirectToAction(nameof(EmployerController.Create), nameof(EmployerController).GetNameOfController());
+				return RedirectToAction(nameof(EmployerController.Resumes), nameof(EmployerController).GetNameOfController());
 
 			throw new NotSupportedException($"Не реализовано для роли {role}");
 		}

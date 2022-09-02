@@ -8,10 +8,14 @@
 <div>
     @if (resume.IsMain)
     {
-        <b>Основное</b>
+        <div><b>Основное</b></div>
     }
     <a asp-action="Create" asp-route-resumeId="@resume.Id">@resume.Post</a>
-    <a asp-action="Delete" asp-route-resumeId="@resume.Id">Delete</a>
-    <a asp-action="MakeMain" asp-route-resumeId="@resume.Id">Сделать основным</a>
+    <a class="btn btn-outline-danger" asp-action="Delete" asp-route-resumeId="@resume.Id">Удалить</a>
+    <a class="btn btn-outline-success" asp-action="MakeMain" asp-route-resumeId="@resume.Id">Сделать основным</a>
+    <div>
+        @resume.Info
+    </div>
+
 </div>
 }

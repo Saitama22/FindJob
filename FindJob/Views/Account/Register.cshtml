@@ -22,15 +22,15 @@
         <input asp-for="ConfirmPassword", value="123"/>
     </div>
     <div>
-        <input type="radio" asp-for="Role" value="Worker" checked>
-        <label>Worker</label>
+        <input class="form-check-label" type="radio" asp-for="Role" value="Worker" checked>
+        <label>Рабочий</label>
     </div>
     <div>
         <input type="radio" asp-for="Role" value="Employer">
-        <label>Employer</label>
+        <label>Работодатель</label>
     </div>
     <div>
-        <button type="submit">Сохранить и войти</button>
+        <button class="btn btn-success" type="submit">Сохранить и войти</button>
     </div>
 </form>
 <a asp-action="Login" asp-controller="Account">Уже есть аккаунт</a>
