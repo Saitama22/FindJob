@@ -1,8 +1,9 @@
 ﻿@model Resume;
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "FindJob - Создание/редактирование резюме";
     Layout = "_WorkerLayout";
 }
+<h4>Создание резюме</h4>
 <form asp-action="Save" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="All"></div>
     <input type="hidden" asp-for="Id" />

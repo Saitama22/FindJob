@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Resume>
 @{ 
-    ViewBag.Title = "Resumes";
+    ViewBag.Title = "FindJob - Мои резюме";
     Layout = "_WorkerLayout";
 }
 @foreach (var resume in Model.OrderBy(r => !r.IsMain))

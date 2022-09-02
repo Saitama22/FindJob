@@ -1,6 +1,6 @@
 ﻿@model LoginModel;
 @{
-    ViewBag.Title = "Login";
+    ViewBag.Title = "FindJob - Вход";
     Layout = "_Account";
 }
 <h3>Вход на сайт</h3>
@@ -20,10 +20,10 @@
             <input asp-for="RememberMe" />
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-success">Войти</button>
+            <button class="btn btn-success" type="submit">Войти</button>
         </div>
     </div>
 </form>
 <a asp-action="Register" asp-controller="Account">Регистрация</a>
 <p/>
-<a asp-action="Remember" asp-controller="Account">Напомнить</a>
+<a asp-action="Remember" asp-controller="Account">Восстановить доступ</a>
