@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FindJob.Models.Enums;
 using FindJob.Models.Interfaces.Handler;
+using FindJob.Models.Interfaces.Repositories;
 using FindJob.Models.Interfaces.Services;
 using FindJob.Models.ParamModels;
 using FindJob.Models.ViewModels;
@@ -16,12 +17,18 @@ namespace FindJob.Models.Handlers
 		private readonly UserManager<UserFj> _userManager;
 		private string _curUserName;
 		private readonly IMailSender _mailSender;
+		private readonly IEmployerProfileRepo _employerProfileRepo;
+		private readonly IWorkerProfileRepo _workerProfileRepo;
+
 		public AccountLoginHandler(SignInManager<UserFj> signInManager,
-			UserManager<UserFj> userManager, IMailSender mailSender)
+			UserManager<UserFj> userManager, IMailSender mailSender, 
+			IEmployerProfileRepo employerProfileRepo, IWorkerProfileRepo workerProfileRepo)
 		{
 			_signInManager = signInManager;
 			_userManager = userManager;
 			_mailSender = mailSender;
+			_employerProfileRepo = employerProfileRepo;
+			_workerProfileRepo = workerProfileRepo;
 		}
 
 		public async Task<Result> TryLogin(LoginModel loginModel)
@@ -64,13 +71,21 @@ namespace FindJob.Models.Handlers
 					if (registerModel.Role == Roles.Worker)
 					{
 						await _userManager.AddToRoleAsync(user, "Worker");
+						await _workerProfileRepo.CreateOrUpdateAsync(new WorkerProfile() 
+						{
+							UserName = user.UserName,
+						});
 					}
 					else if (registerModel.Role == Roles.Employer)
 					{
 						await _userManager.AddToRoleAsync(user, "Employer");
+						await _employerProfileRepo.CreateOrUpdateAsync(new EmployerProfile()
+						{
+							UserName = user.UserName,
+						});
 					}
 					await _signInManager.SignInAsync(user, false);
-					_curUserName = user.UserName;
+					_curUserName = user.UserName;					
 					return Result.SuccessResult();
 				}
 				else

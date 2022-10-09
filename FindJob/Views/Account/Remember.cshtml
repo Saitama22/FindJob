@@ -1,6 +1,6 @@
 ﻿@model OneEmail;
 @{
-    ViewBag.Title = "Remember";
+    ViewBag.Title = "FindJob - восстановление пароля";
     Layout = "_Account";
 }
 <form asp-action="Remember" method="post">
@@ -10,6 +10,7 @@
         <input asp-for="Email" />
     </div>
     <div class="form-group">
-        <button type="submit">Войти</button>
+        <button class="btn btn-success" type="submit">Войти</button>
     </div>
 </form>
+<a asp-action="Login" asp-controller="Account">Уже есть аккаунт</a>

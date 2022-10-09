@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using FindJob.Models.Interfaces.ViewModels;
@@ -10,17 +12,21 @@ namespace FindJob.Models.ViewModels
 	{
 		public Guid Id { get; set; }
 
-		public string UserName { get; set; }
-
+		[DisplayName("Должность")]
 		public string Post { get; set; }
 
+		[DisplayName("Опыт работы")]
 		public int? Expirience { get; set; }
 
+		[DisplayName("Зарплата")]
 		public double? Salary { get; set; }
 
+		[DisplayName("О вакансии")]
 		public string Info { get; set; }
 
 		public bool IsMain { get; set; }
+
+		public EmployerProfile EmployerProfil { get; set; }
 
 		public List<Resume> Resumes { get; set; } = new();
 

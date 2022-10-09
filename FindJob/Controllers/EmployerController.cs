@@ -46,6 +46,11 @@ namespace FindJob.Controllers
 			return View(_employerHandler.GetResumes());
 		}
 
+		public IActionResult Account()
+		{
+			return View();
+		}
+
 		public IActionResult Resume(Guid resumeId)
 		{
 			var resume = _employerHandler.GetResume(resumeId);

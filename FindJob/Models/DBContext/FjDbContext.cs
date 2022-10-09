@@ -17,6 +17,10 @@ namespace FindJob.Models.DBContext
 
 		public DbSet<FjResponses> Responses { get; set; }
 
+        public DbSet<WorkerProfile> WorkerProfil { get; set; }
+
+        public DbSet<EmployerProfile> EmployerProfil { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder

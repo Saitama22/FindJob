@@ -1,9 +1,19 @@
 ﻿@model Vacancy;
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "FindJob - просмотр вакансии";
     Layout = "_WorkerLayout";
 }
-
-<p>@Model.Post</p>
-<p>Опыт: @Model.Expirience</p>
-<p>@Model.Info</p>
+Вакансия @Model.Post
+<div>Опыт: 
+ @{ 
+    if (Model.Expirience == null || Model.Expirience == 0)
+    {
+        <span>Без опыта</span>;
+    }
+    if (Model.Expirience != null && Model.Expirience != 0)
+    {
+         <span>Model.Expirience</span>;
+    }
+}
+</div>
+Описание: @Model.Info

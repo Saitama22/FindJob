@@ -11,5 +11,6 @@ namespace FindJob.Models.Interfaces.Repositories
 		Task AddResponseAsync(Resume resume, Vacancy vacancy);
 		IEnumerable<FjResponses> GetResumeResponses(string userName);
 		IEnumerable<FjResponses> GetVacancyResponses(string userName);
+		Task DeleteAsync(FjResponses responses);
 	}
 }

@@ -1,16 +1,16 @@
 ﻿<title>@ViewBag.Title</title>
 <head>
     <link rel="stylesheet" href="~/css/StyleSheet.css" />
+    <link rel="stylesheet" href="~/lib/twitter-bootstrap/css/bootstrap.css" />
 </head>
 <body>
-    <nav class="navbar navbar-light navbar-brand" style="background-color: #ffffff;">
-        <a asp-action="Create" asp-controller="Worker">Create resume</a>
-        <a asp-action="Resumes" asp-controller="Worker">My resumes</a>
-        <a asp-action="Vacancies" asp-controller="Worker">Vacancies</a>
-        <a asp-action="Responses" asp-controller="Worker">Responses</a>
-        <a asp-action="Account" asp-controller="Account">Account</a>
-        <a asp-action="Logout" asp-controller="Account">LogOut</a>
+    <nav class="navbar navbar navbar-expand-lg navbar-light bg-light" style="background-color: #ffffff;">
+        <a class="nav-link" asp-action="Vacancies" asp-controller="Worker">Вакансии</a>
+        <a class="nav-link" asp-action="Resumes" asp-controller="Worker">Мои резюме</a>
+        <a class="nav-link" asp-action="Create" asp-controller="Worker">Создать резюме</a>
+        <a class="nav-link" asp-action="Responses" asp-controller="Worker">Ответы</a>
+        <a class="nav-link" asp-action="Account" asp-controller="Worker">Аккаунт</a>
+        <a class="nav-link" asp-action="Logout" asp-controller="Account">Выйти</a>
     </nav>
-
     @RenderBody()
 </body>

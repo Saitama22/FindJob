@@ -3,50 +3,23 @@ using System;
 using FindJob.Models.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FindJob.Migrations
 {
     [DbContext(typeof(FjDbContext))]
-    partial class FjDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220902211038_RemoveExcessFields")]
+    partial class RemoveExcessFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-            modelBuilder.Entity("FindJob.Models.ViewModels.EmployerProfile", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("text");
-
-                    b.Property<byte[]>("Picture")
-                        .HasColumnType("bytea");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EmployerProfil");
-                });
 
             modelBuilder.Entity("FindJob.Models.ViewModels.FjImage", b =>
                 {
@@ -107,14 +80,12 @@ namespace FindJob.Migrations
                     b.Property<double?>("Salary")
                         .HasColumnType("double precision");
 
-                    b.Property<Guid?>("WorkerProfilId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("UserName")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ImageId");
-
-                    b.HasIndex("WorkerProfilId");
 
                     b.ToTable("Resumes");
                 });
@@ -123,9 +94,6 @@ namespace FindJob.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("EmployerProfilId")
                         .HasColumnType("uuid");
 
                     b.Property<int?>("Expirience")
@@ -143,43 +111,12 @@ namespace FindJob.Migrations
                     b.Property<double?>("Salary")
                         .HasColumnType("double precision");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployerProfilId");
-
-                    b.ToTable("Vacancies");
-                });
-
-            modelBuilder.Entity("FindJob.Models.ViewModels.WorkerProfile", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<byte[]>("DefaultPicture")
-                        .HasColumnType("bytea");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Region")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Surname")
-                        .HasColumnType("text");
-
                     b.Property<string>("UserName")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("WorkerProfil");
+                    b.ToTable("Vacancies");
                 });
 
             modelBuilder.Entity("FindJob.Models.ViewModels.FjResponses", b =>
@@ -207,27 +144,7 @@ namespace FindJob.Migrations
                         .WithMany()
                         .HasForeignKey("ImageId");
 
-                    b.HasOne("FindJob.Models.ViewModels.WorkerProfile", "WorkerProfil")
-                        .WithMany("Resumes")
-                        .HasForeignKey("WorkerProfilId");
-
                     b.Navigation("Image");
-
-                    b.Navigation("WorkerProfil");
-                });
-
-            modelBuilder.Entity("FindJob.Models.ViewModels.Vacancy", b =>
-                {
-                    b.HasOne("FindJob.Models.ViewModels.EmployerProfile", "EmployerProfil")
-                        .WithMany("Vacancies")
-                        .HasForeignKey("EmployerProfilId");
-
-                    b.Navigation("EmployerProfil");
-                });
-
-            modelBuilder.Entity("FindJob.Models.ViewModels.EmployerProfile", b =>
-                {
-                    b.Navigation("Vacancies");
                 });
 
             modelBuilder.Entity("FindJob.Models.ViewModels.Resume", b =>
@@ -238,11 +155,6 @@ namespace FindJob.Migrations
             modelBuilder.Entity("FindJob.Models.ViewModels.Vacancy", b =>
                 {
                     b.Navigation("Responses");
-                });
-
-            modelBuilder.Entity("FindJob.Models.ViewModels.WorkerProfile", b =>
-                {
-                    b.Navigation("Resumes");
                 });
 #pragma warning restore 612, 618
         }

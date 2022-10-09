@@ -45,12 +45,18 @@ namespace FindJob.Models.Repositories
 
 		public IEnumerable<FjResponses> GetResumeResponses(string userName)
 		{
-			return MainDbSet.Include(r => r.Resume).Include(r => r.Vacancy).Where(r => r.Resume.UserName == userName);
+			return MainDbSet.Include(r => r.Resume).Include(r => r.Vacancy).Where(r => r.Resume.WorkerProfil.UserName == userName);
 		}
 
 		public IEnumerable<FjResponses> GetVacancyResponses(string userName)
 		{
-			return MainDbSet.Include(r => r.Resume).Include(r => r.Vacancy).Where(r => r.Vacancy.UserName == userName);
+			return MainDbSet.Include(r => r.Resume).Include(r => r.Vacancy).Where(r => r.Vacancy.EmployerProfil.UserName == userName);
+		}
+
+		public async Task DeleteAsync(FjResponses responses)
+		{
+			MainDbSet.Remove(responses);
+			await Context.SaveChangesAsync();
 		}
 	}
 }

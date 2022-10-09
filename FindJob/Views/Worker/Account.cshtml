@@ -1,0 +1,31 @@
+﻿@model WorkerProfile
+@{
+    ViewBag.Title = "FindJob - аккаунт";
+    Layout = "_WorkerLayout";
+}
+<div>
+    @Model.Name.IfIsNullorEmpty("Имя не указано")
+
+    <span> </span>
+    @Model.Surname.IfIsNullorEmpty("Фамилия не указана")
+
+</div>
+<div>
+    <span>Телефон</span>
+    @Model.Phone.IfIsNullorEmpty(" не указан")
+
+</div>
+<div>
+    <span>Email</span>
+    @Model.Email.IfIsNullorEmpty(" не указан")
+</div>
+<div>
+    <span>Место поиска работы</span>
+    @Model.Region.IfIsNullorEmpty("не указано")
+</div>
+<div>
+    <a asp-action="RedactProfile" asp-route-id="@Model.Id" asp-controller="Worker">Профиль</a>
+</div>
+<div>
+    <a asp-action="Restore" asp-controller="Account">Изменить пароль</a>
+</div>

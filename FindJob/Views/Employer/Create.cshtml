@@ -1,6 +1,6 @@
 ﻿@model Vacancy;
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "FindJob - создание/редактирование вакансии";
     Layout = "_EmployerLayout";
 }
 <form asp-action="Save" method="post">
@@ -20,7 +20,7 @@
         <textarea asp-for="Info"></textarea>
     </div>
     <div>
-        <button type="submit">Save</button>
+        <button class="btn btn-outline-success" type="submit">Сохранить</button>
     </div>
-    <a asp-action="Vacancies">Cancel</a>
+    <a asp-action="Vacancies">Отмена</a>
 </form>

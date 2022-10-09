@@ -1,0 +1,3 @@
+﻿dotnet ef migrations add RemoveExcessFields --context FjDbContext --project FindJob
+dotnet ef database update --context FjDbContext --project FindJob
+dotnet ef migrations remove --context FjDbContext --project FindJob 

@@ -1,0 +1,33 @@
+﻿@model WorkerProfile;
+@{
+    ViewBag.Title = "FindJob - Профиль";
+    Layout = "_WorkerLayout";
+}
+<form asp-action="SaveProfile" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="All"></div>
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="UserName" />
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+        <span asp-validation-for="Name" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Surname"></label>
+        <input asp-for="Surname" />
+        <span asp-validation-for="Surname" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Phone"></label>
+        <input asp-for="Phone" />
+        <span asp-validation-for="Phone" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Region"></label>
+        <input asp-for="Region" />
+        <span asp-validation-for="Region" />
+    </div>
+    <div>
+        <button class="btn btn-outline-success" type="submit">Сохранить</button>
+    </div>
+</form>

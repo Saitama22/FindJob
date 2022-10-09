@@ -1,5 +1,8 @@
 ﻿@model RestorePasswordModel
-
+@{
+    ViewBag.Title = "FindJob - изменение пароля";
+    Layout = "_Account";
+}
 <form asp-action="Restore" method="post">
     <div class="validation" asp-validation-summary="All"></div>
     <div asp-validation-summary="All"></div>
@@ -16,6 +19,6 @@
         <input asp-for="ConfirmPassword" />
     </div>
     <div>
-        <button type="submit">Сохранить</button>
+        <button class="btn btn-success" type="submit">Сохранить</button>
     </div>
 </form>

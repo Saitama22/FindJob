@@ -15,7 +15,7 @@ namespace FindJob.Models.Repositories
 		{
 		}
 
-		public IEnumerable<Resume> Resumes => Context.Resumes;
+		public IEnumerable<Resume> Resumes => Context.Resumes.Include(r => r.WorkerProfil);
 
 		protected override DbSet<Resume> MainDbSet => Context.Resumes;
 

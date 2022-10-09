@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using FindJob.Models.Interfaces.ViewModels;
 using Microsoft.AspNetCore.Http;
@@ -10,26 +11,27 @@ namespace FindJob.Models.ViewModels
 	{
 		public Guid Id { get; set; }
 
-		public string Name { get; set; }
-
-		public string UserName { get; set; }
-
+		[DisplayName("Желаемая должность")]
 		public string Post { get; set; }
 
-		public string Surname { get; set; }
-
+		[DisplayName("Опыт работы")]
 		public int? Expirience { get; set; }
 
+		[DisplayName("Зарплата")]
 		public double? Salary { get; set; }
 
+		[DisplayName("О себе")]
 		public string Info { get; set; }
 
 		[NotMapped]
+		[DisplayName("Загрузить фото")]
 		public IFormFile FormFile { get; set; }
 
 		public FjImage Image { get; set; }
 
 		public bool IsMain { get; set; }
+
+		public WorkerProfile WorkerProfil { get; set; }
 
 		public List<Vacancy> Vacancies { get; set; } = new();
 
@@ -37,9 +39,7 @@ namespace FindJob.Models.ViewModels
 
 		public void Update(Resume newModel) 
 		{
-			Name = newModel.Name;
 			Post = newModel.Post;
-			Surname = newModel.Surname;
 			Expirience = newModel.Expirience;
 			Salary = newModel.Salary;
 			Info = newModel.Info;
