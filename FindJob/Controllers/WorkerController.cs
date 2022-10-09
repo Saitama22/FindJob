@@ -75,5 +75,21 @@ namespace FindJob.Controllers
 		{
 			return _workerHandler.GetUserResumes(HttpContext.User.Identity.Name);
 		}
+
+		public IActionResult Account()
+		{
+			return View(_workerHandler.GetProfile(HttpContext.User.Identity.Name));
+		}
+
+		public IActionResult RedactProfile(Guid id)
+		{
+			return View(_workerHandler.GetWorkerProfile(id));
+		}
+
+		public async Task<IActionResult> SaveProfile(WorkerProfile workerProfile)
+		{
+			await _workerHandler.SavePorfileAsync(workerProfile);
+			return RedirectToAction(nameof(Account));
+		}
 	}
 }

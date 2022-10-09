@@ -16,19 +16,21 @@ namespace FindJob.Models.Handlers
 		private readonly IVacancyRepo _vacancyRepo;
 		private readonly IImageRepo _imageRepo;
 		private readonly IResponseRepo _responseRepo;
+		private readonly IWorkerProfileRepo _workerProfileRepo;
 
-		public WorkerHandler(IResumeRepo resumeRepo, IVacancyRepo vacancyRepo, 
-			IImageRepo imageRepo, IResponseRepo responseRepo)
+		public WorkerHandler(IResumeRepo resumeRepo, IVacancyRepo vacancyRepo,
+			IImageRepo imageRepo, IResponseRepo responseRepo, IWorkerProfileRepo workerProfileRepo)
 		{
 			_resumeRepo = resumeRepo;
 			_vacancyRepo = vacancyRepo;
 			_imageRepo = imageRepo;
 			_responseRepo = responseRepo;
+			_workerProfileRepo = workerProfileRepo;
 		}
 
 		public async Task AddResponseVacancyAsync(Guid vacancyId, string userName)
 		{
-			var resume = _resumeRepo.Resumes.FirstOrDefault(r => r.UserName == userName && r.IsMain);
+			var resume = _resumeRepo.Resumes.FirstOrDefault(r => r.WorkerProfil.UserName == userName && r.IsMain);
 			if (resume == null)
 				return;
 			var vacancy = _vacancyRepo.GetByGuid(vacancyId);
@@ -47,9 +49,15 @@ namespace FindJob.Models.Handlers
 				await _imageRepo.AddToRepoAsync(image);
 				resume.Image = image;
 			}
-				
-			resume.UserName = userName;
+
+			var workerProfile = _workerProfileRepo.WorkerProfils.FirstOrDefault(r => r.UserName == userName);
+			resume.WorkerProfil = workerProfile;
 			await _resumeRepo.CreateOrUpdateAsync(resume);
+		}
+
+		public WorkerProfile GetProfile(string name)
+		{
+			return _workerProfileRepo.WorkerProfils.FirstOrDefault(r => r.UserName == name);
 		}
 
 		public IEnumerable<FjResponses> GetResponses(string name)
@@ -65,7 +73,7 @@ namespace FindJob.Models.Handlers
 
 		public IEnumerable<Resume> GetUserResumes(string userName)
 		{
-			return _resumeRepo.Resumes.Where(r => r.UserName == userName);
+			return _resumeRepo.Resumes.Where(r => r.WorkerProfil.UserName == userName);
 		}
 
 		public IEnumerable<Vacancy> GetVacancies()
@@ -78,9 +86,14 @@ namespace FindJob.Models.Handlers
 			return  _vacancyRepo.Vacancies.FirstOrDefault(r => r.Id == vacancyId);
 		}
 
+		public WorkerProfile GetWorkerProfile(Guid id)
+		{
+			return _workerProfileRepo.GetByGuid(id);
+		}
+
 		public async Task MakeMainResumeAsync(Guid resumeId, string userName)
 		{
-			var mainResume = _resumeRepo.Resumes.FirstOrDefault(r => r.IsMain && r.UserName == userName);
+			var mainResume = _resumeRepo.Resumes.FirstOrDefault(r => r.IsMain && r.WorkerProfil.UserName == userName);
 			if (mainResume != null)
 				mainResume.IsMain = false;
 			var resume = _resumeRepo.GetByGuid(resumeId);
@@ -91,6 +104,11 @@ namespace FindJob.Models.Handlers
 		public async Task RemoveResume(Guid resumeId)
 		{
 			await _resumeRepo.DeleteAsync(resumeId);
+		}
+
+		public async Task SavePorfileAsync(WorkerProfile workerProfile)
+		{
+			await _workerProfileRepo.CreateOrUpdateAsync(workerProfile);
 		}
 	}
 }

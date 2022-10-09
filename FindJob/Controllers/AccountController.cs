@@ -99,7 +99,7 @@ namespace FindJob.Controllers
 				return RedirectToAction(nameof(WorkerController.Vacancies), nameof(WorkerController).GetNameOfController());
 
 			if (role == Roles.Employer)
-				return RedirectToAction(nameof(EmployerController.Resumes), nameof(EmployerController).GetNameOfController());
+				return RedirectToAction(nameof(EmployerController.Account), nameof(EmployerController).GetNameOfController());
 
 			throw new NotSupportedException($"Не реализовано для роли {role}");
 		}
@@ -119,12 +119,20 @@ namespace FindJob.Controllers
 			if (result.Succeeded)
 				return await GetViewByRoleAsync();
 			AddErrors(result.Errors);
-			return View(nameof(Account));
+			return await GetAccountViewByRoleAsync();
 		}
 
-		public async Task<IActionResult> Account()
+		public async Task<RedirectToActionResult> GetAccountViewByRoleAsync()
 		{
-			return View(await _accountLoginHandler.GetRoleAsync(HttpContext.User.Identity.Name));
+			var role = await _accountLoginHandler.GetRoleAsync();
+
+			if (role == Roles.Worker)
+				return RedirectToAction(nameof(WorkerController.Account), nameof(WorkerController).GetNameOfController());
+
+			if (role == Roles.Employer)
+				return RedirectToAction(nameof(EmployerController.Account), nameof(EmployerController).GetNameOfController());
+
+			throw new NotSupportedException($"Не реализовано для роли {role}");
 		}
 	}
 }

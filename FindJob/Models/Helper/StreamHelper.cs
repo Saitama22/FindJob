@@ -6,11 +6,9 @@ namespace FindJob.Models.Helper
 	{
 		public static byte[] GetBytes(this Stream stream)
 		{
-			using (MemoryStream ms = new MemoryStream())
-			{
-				stream.CopyTo(ms);
-				return ms.ToArray();
-			}
+			using MemoryStream ms = new();
+			stream.CopyTo(ms);
+			return ms.ToArray();
 		}
 	}
 }

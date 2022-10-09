@@ -11,16 +11,6 @@ namespace FindJob.Models.ViewModels
 	{
 		public Guid Id { get; set; }
 
-		[NotMapped]
-		[DisplayName("Имя")]
-		public string Name { get; set; }
-
-		[NotMapped]
-		[DisplayName("Фамилия")]
-		public string Surname { get; set; }
-
-		public string UserName { get; set; }
-
 		[DisplayName("Желаемая должность")]
 		public string Post { get; set; }
 
@@ -41,15 +31,15 @@ namespace FindJob.Models.ViewModels
 
 		public bool IsMain { get; set; }
 
+		public WorkerProfile WorkerProfil { get; set; }
+
 		public List<Vacancy> Vacancies { get; set; } = new();
 
 		public List<FjResponses> Responses { get; set; } = new();
 
 		public void Update(Resume newModel) 
 		{
-			Name = newModel.Name;
 			Post = newModel.Post;
-			Surname = newModel.Surname;
 			Expirience = newModel.Expirience;
 			Salary = newModel.Salary;
 			Info = newModel.Info;

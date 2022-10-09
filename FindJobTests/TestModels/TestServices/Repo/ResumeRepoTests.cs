@@ -68,9 +68,7 @@ namespace FindJobTests.TestModels.TestSevices.Repo
             var resumeById = _resumeRepo.GetByGuid(resume.Id);
             Assert.AreEqual(resume.Id, resumeById.Id);
             Assert.AreEqual(resume.Info, resumeById.Info);
-            Assert.AreEqual(resume.Name, resumeById.Name);
             Assert.AreEqual(resume.Salary, resumeById.Salary);
-            Assert.AreEqual(resume.Surname, resumeById.Surname);
 		}
 
         public async Task DeleteTest(Resume resume)

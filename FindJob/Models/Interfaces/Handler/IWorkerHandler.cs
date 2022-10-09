@@ -23,5 +23,10 @@ namespace FindJob.Models.Interfaces.Handler
 		Task AddResponseVacancyAsync(Guid vacancyId, string name);
 		IEnumerable<FjResponses> GetResponses(string name);
 		Vacancy GetVacancy(Guid vacancyId);
+
+		WorkerProfile GetProfile(string name);
+
+		Task SavePorfileAsync(WorkerProfile workerProfile);
+		WorkerProfile GetWorkerProfile(Guid id);
 	}
 }

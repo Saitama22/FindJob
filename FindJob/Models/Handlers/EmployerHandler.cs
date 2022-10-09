@@ -13,17 +13,20 @@ namespace FindJob.Models.Handlers
 		private readonly IResumeRepo _resumeRepo;
 		private readonly IVacancyRepo _vacancyRepo;
 		private readonly IResponseRepo _responseRepo;
+		private readonly IEmployerProfileRepo _employerProfileRepo;
 
-		public EmployerHandler(IResumeRepo resumeRepo, IVacancyRepo vacancyRepo, IResponseRepo responseRepo)
+		public EmployerHandler(IResumeRepo resumeRepo, IVacancyRepo vacancyRepo, IResponseRepo responseRepo, IEmployerProfileRepo employerProfileRepo)
 		{
 			_resumeRepo = resumeRepo;
 			_vacancyRepo = vacancyRepo;
 			_responseRepo = responseRepo;
+			_employerProfileRepo = employerProfileRepo;
 		}
 
 		public async Task AddToVacancyRepo(Vacancy vacancy, string userName)
 		{
-			vacancy.UserName = userName;
+			var employerProfile = _employerProfileRepo.EmployerProfiles.FirstOrDefault(r => r.UserName == userName);
+			vacancy.EmployerProfil = employerProfile;
 			await _vacancyRepo.CreateOrUpdateAsync(vacancy);
 		}
 
@@ -34,7 +37,7 @@ namespace FindJob.Models.Handlers
 
 		public IEnumerable<Vacancy> GetUserVacancies(string userName)
 		{
-			return _vacancyRepo.Vacancies.Where(r => r.UserName == userName);
+			return _vacancyRepo.Vacancies.Where(r => r.EmployerProfil.UserName == userName);
 		}
 
 		public IEnumerable<Resume> GetResumes()

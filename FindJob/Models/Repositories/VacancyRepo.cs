@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using FindJob.Models.DBContext;
 using FindJob.Models.Interfaces.Repositories;
 using FindJob.Models.ViewModels;
@@ -14,7 +12,7 @@ namespace FindJob.Models.Repositories
 		{
 		}
 
-		public IEnumerable<Vacancy> Vacancies => Context.Vacancies;
+		public IEnumerable<Vacancy> Vacancies => Context.Vacancies.Include(r => r.EmployerProfil);
 
 		protected override DbSet<Vacancy> MainDbSet => Context.Vacancies;
 	}

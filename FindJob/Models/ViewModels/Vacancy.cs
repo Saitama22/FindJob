@@ -12,11 +12,6 @@ namespace FindJob.Models.ViewModels
 	{
 		public Guid Id { get; set; }
 
-		public string UserName { get; set; }
-
-		[NotMapped]
-		public string EmployerName { get; set; }
-
 		[DisplayName("Должность")]
 		public string Post { get; set; }
 
@@ -30,6 +25,8 @@ namespace FindJob.Models.ViewModels
 		public string Info { get; set; }
 
 		public bool IsMain { get; set; }
+
+		public EmployerProfile EmployerProfil { get; set; }
 
 		public List<Resume> Resumes { get; set; } = new();
 

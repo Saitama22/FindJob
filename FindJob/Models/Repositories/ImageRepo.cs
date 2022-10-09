@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using FindJob.Models.DBContext;
 using FindJob.Models.Interfaces.Repositories;
 using FindJob.Models.ViewModels;
@@ -6,16 +7,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FindJob.Models.Repositories
 {
-	public class ImageRepo : IImageRepo
+	public class ImageRepo : BaseRepo<FjImage>, IImageRepo
 	{
-		protected FjDbContext Context { get; private set; }
-
 		public ImageRepo(FjDbContext context)
+			: base(context)
 		{
-			Context = context;
 		}
 
-		private DbSet<FjImage> MainDbSet => Context.Images;
+		public IEnumerable<FjImage> Images => Context.Images;
+
+		protected override DbSet<FjImage> MainDbSet => Context.Images;
 
 		public async Task AddToRepoAsync(FjImage image)
 		{
